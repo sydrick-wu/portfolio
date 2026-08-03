@@ -150,9 +150,15 @@ export default function Home() {
   useEffect(() => {
     const saved = window.localStorage.getItem("sydrick-language") as Language | null;
     const preferred = saved === "zh" || saved === "en" ? saved : "en";
-    setLanguage(preferred);
-    document.documentElement.lang = preferred === "zh" ? "zh-CN" : "en";
-    return () => transitionTimers.current.forEach(window.clearTimeout);
+    const timers = transitionTimers.current;
+    const languageFrame = window.requestAnimationFrame(() => {
+      setLanguage(preferred);
+      document.documentElement.lang = preferred === "zh" ? "zh-CN" : "en";
+    });
+    return () => {
+      window.cancelAnimationFrame(languageFrame);
+      timers.forEach(window.clearTimeout);
+    };
   }, []);
 
   useEffect(() => {
