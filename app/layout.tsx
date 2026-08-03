@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
-import { headers } from "next/headers";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -15,33 +14,27 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 const title = "Sydrick Wu — Economics, Endurance & Technology";
-const description =
-  "The personal portfolio of Sydrick Wu, an economics graduate student, technology operator and endurance athlete.";
+const description = "Sydrick Wu 的双语互动 3D 个人主页：经济学、科技实践与耐力运动。";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
-  const protocol = requestHeaders.get("x-forwarded-proto") ?? (host?.includes("localhost") ? "http" : "https");
-  const origin = host ? `${protocol}://${host}` : "http://localhost:3000";
-  const socialImage = new URL("/og.png", origin).toString();
-
-  return {
+export const metadata: Metadata = {
+  metadataBase: new URL("https://sydrick-wu.github.io"),
+  title,
+  description,
+  alternates: { canonical: "/" },
+  openGraph: {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      images: [{ url: socialImage, width: 1674, height: 941, alt: "Sydrick Wu portfolio" }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [socialImage],
-    },
-  };
-}
+    type: "website",
+    url: "/",
+    images: [{ url: "/og.jpg", width: 1200, height: 675, alt: "Sydrick Wu interactive 3D portfolio" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og.jpg"],
+  },
+};
 
 export default function RootLayout({
   children,
