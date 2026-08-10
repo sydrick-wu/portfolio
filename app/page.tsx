@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { InteractivePortrait, type Expression } from "./components/InteractivePortrait";
+import { InteractivePortrait } from "./components/InteractivePortrait";
 
 type Language = "en" | "zh";
 
@@ -15,24 +15,24 @@ const content = {
     contact: "Let’s talk",
     portfolio: "Portfolio / 2026",
     location: "Mannheim, Germany ↔ Shanghai, China",
-    headlineA: "Think in systems.",
-    headlineB: "Move with intent.",
-    intro: "I’m Sydrick—an economics graduate student, technology operator and endurance athlete exploring how ambitious ideas become measurable progress.",
-    enter: "Enter my world",
+    headlineA: "About Sydrick",
+    headlineB: "",
+    intro: "MSc Economics student at the University of Mannheim. Previously worked across venture, growth and analytics; trains and races in triathlon, running and cycling.",
+    enter: "Scroll through the portrait",
     github: "View GitHub",
     stats: [
       ["Top 3%", "Amsterdam economics cohort"],
       ["18", "countries explored"],
       ["1st", "triathlon age group"],
     ],
-    scroll: "Scroll to navigate the system",
+    scroll: "Scroll · the camera follows",
     profileLabel: "01 / Profile",
     profileTitle: "A personal operating system for the long game.",
     profileIntro: "Three disciplines, one method: observe carefully, choose the highest-leverage move, then compound it.",
     pillars: [
-      ["Economist", "I use economic reasoning to turn noisy markets, incentives and human behaviour into decisions that can survive contact with reality.", ["Economics", "Data", "Strategy"]],
-      ["Builder", "From venture scouting to product growth, I move between research, systems and hands-on execution—especially around emerging technology.", ["Artificial Intelligence", "Venture", "Growth"]],
-      ["Endurance athlete", "Running, riding and swimming are my long-form practice in patience: measure the signal, manage the load, keep moving.", ["Triathlon", "Cycling", "Running"]],
+      ["Economist", "MSc Economics at the University of Mannheim, following economics study at Amsterdam and Nottingham. My focus is incentives, markets and applied decision-making.", ["Economics", "Data", "Strategy"]],
+      ["Builder", "Experience in founder relations, investment research and growth at MiraclePlus, plus data and analytics work with GroupM’s Unilever team.", ["Artificial Intelligence", "Venture", "Growth"]],
+      ["Endurance athlete", "Triathlete, runner and cyclist. My 2025 results include an age-group win at Qiandao Lake and a 1:26:09 half marathon.", ["Triathlon", "Cycling", "Running"]],
     ],
     pathLabel: "02 / Path",
     pathTitle: "Selected coordinates.",
@@ -73,24 +73,24 @@ const content = {
     contact: "与我联系",
     portfolio: "个人主页 / 2026",
     location: "德国曼海姆 ↔ 中国上海",
-    headlineA: "系统思考。",
-    headlineB: "坚定前行。",
-    intro: "我是 Sydrick——经济学硕士生、科技行业实践者与耐力运动者。我关注宏大想法如何转化为可衡量、可持续的进步。",
-    enter: "进入我的世界",
+    headlineA: "关于 Sydrick",
+    headlineB: "",
+    intro: "曼海姆大学经济学硕士生，曾从事风险投资、增长与数据分析工作；同时持续参加铁人三项、跑步和自行车赛事。",
+    enter: "沿头像向下探索",
     github: "查看 GitHub",
     stats: [
       ["前 3%", "阿姆斯特丹经济学专业"],
       ["18", "探索过的国家"],
       ["冠军", "铁人三项年龄组"],
     ],
-    scroll: "向下滚动，浏览我的系统",
+    scroll: "向下滚动 · 镜头随之移动",
     profileLabel: "01 / 简介",
     profileTitle: "一套面向长期主义的个人操作系统。",
     profileIntro: "三个领域，同一种方法：认真观察，选择杠杆最高的一步，然后让成果持续复利。",
     pillars: [
-      ["经济学者", "我用经济学思维理解市场、激励与人的行为，把嘈杂的信息转化为经得起现实检验的决策。", ["经济学", "数据", "战略"]],
-      ["构建者", "从风险投资项目搜寻到产品增长，我在研究、系统与实际执行之间切换，尤其关注前沿科技。", ["人工智能", "风险投资", "增长"]],
-      ["耐力运动者", "跑步、骑行和游泳是我长期训练耐心的方式：识别信号、管理负荷、持续前进。", ["铁人三项", "骑行", "跑步"]],
+      ["经济学者", "现就读于曼海姆大学经济学硕士，此前在阿姆斯特丹与诺丁汉学习经济学，关注激励、市场与应用决策。", ["经济学", "数据", "战略"]],
+      ["构建者", "曾在奇绩创坛参与创始人关系、投资研究与增长，也在群邑联合利华团队从事数据与分析工作。", ["人工智能", "风险投资", "增长"]],
+      ["耐力运动者", "铁人三项、跑步和自行车运动者。2025 年取得千岛湖铁人三项年龄组冠军，并跑出 1:26:09 半程马拉松。", ["铁人三项", "骑行", "跑步"]],
     ],
     pathLabel: "02 / 经历",
     pathTitle: "人生坐标。",
@@ -124,8 +124,6 @@ const content = {
   },
 } as const;
 
-const sectionIds = ["profile", "path", "pace", "contact"];
-
 const socialLinks = [
   "https://github.com/sydrick-wu",
   "https://www.linkedin.com/in/sydrick-wu",
@@ -142,9 +140,10 @@ const assistantMessages: Record<Language, string> = {
 export default function Home() {
   const [language, setLanguage] = useState<Language>("en");
   const [transitionTarget, setTransitionTarget] = useState<Language | null>(null);
-  const [activeSection, setActiveSection] = useState("profile");
-  const [expression, setExpression] = useState<Expression>("neutral");
+  const [storyStage, setStoryStage] = useState(0);
   const transitionTimers = useRef<number[]>([]);
+  const storyRef = useRef<HTMLElement>(null);
+  const storyProgress = useRef(0);
   const t = content[language];
 
   useEffect(() => {
@@ -164,6 +163,7 @@ export default function Home() {
   useEffect(() => {
     const root = document.documentElement;
     let frame = 0;
+    let currentStoryStage = 0;
     const updatePointer = (event: PointerEvent) => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
@@ -174,21 +174,23 @@ export default function Home() {
     const updateScroll = () => {
       const available = root.scrollHeight - innerHeight;
       root.style.setProperty("--scroll-progress", `${available > 0 ? scrollY / available : 0}`);
+      if (storyRef.current) {
+        const rect = storyRef.current.getBoundingClientRect();
+        const storyRange = Math.max(1, storyRef.current.offsetHeight - innerHeight);
+        const progress = Math.min(1, Math.max(0, -rect.top / storyRange));
+        storyProgress.current = progress;
+        storyRef.current.style.setProperty("--story-progress", `${progress}`);
+        const nextStage = progress < 0.14 ? 0 : progress < 0.39 ? 1 : progress < 0.64 ? 2 : 3;
+        if (nextStage !== currentStoryStage) {
+          currentStoryStage = nextStage;
+          setStoryStage(nextStage);
+        }
+      }
     };
-    const sections = [...document.querySelectorAll<HTMLElement>("section[id]")];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveSection(visible.target.id);
-      },
-      { rootMargin: "-32% 0px -46% 0px", threshold: [0.05, 0.25, 0.55] },
-    );
-    sections.forEach((section) => observer.observe(section));
     addEventListener("pointermove", updatePointer, { passive: true });
     addEventListener("scroll", updateScroll, { passive: true });
     updateScroll();
     return () => {
-      observer.disconnect();
       removeEventListener("pointermove", updatePointer);
       removeEventListener("scroll", updateScroll);
       cancelAnimationFrame(frame);
@@ -219,17 +221,22 @@ export default function Home() {
         </div>
       )}
       <div className="site-shell" aria-hidden={transitionTarget ? true : undefined}>
+      <div className="global-portrait-scene" aria-hidden="true">
+        <InteractivePortrait language={language} progressRef={storyProgress} />
+      </div>
       <div className="progress-rail" aria-hidden="true"><span /></div>
-      <header className="topbar">
+      <header className={`topbar sen-chrome stage-${storyStage}`}>
+        <div className="sen-frame" aria-hidden="true" />
+        <span className="sen-mark sen-mark-tl" aria-hidden="true">+</span>
+        <span className="sen-mark sen-mark-tr" aria-hidden="true">+</span>
+        <span className="sen-mark sen-mark-bl" aria-hidden="true">+</span>
+        <span className="sen-mark sen-mark-br" aria-hidden="true">+</span>
         <a className="brand" href="#top" aria-label={language === "zh" ? "Sydrick Wu — 返回顶部" : "Sydrick Wu — back to top"}>
-          <span className="brand-mark">SW</span>
           <span className="brand-copy"><strong>Sydrick Wu</strong><small>{t.descriptor}</small></span>
         </a>
-        <nav aria-label={language === "zh" ? "主导航" : "Primary navigation"}>
-          {sectionIds.map((id, index) => (
-            <a href={`#${id}`} key={id} className={activeSection === id ? "active" : ""}>{t.nav[index]}</a>
-          ))}
-        </nav>
+        <div className="sen-meta sen-meta-top">{t.portfolio}</div>
+        <div className="sen-meta sen-meta-bottom">{t.descriptor}</div>
+        <div className="sen-meta sen-meta-side">{t.location}</div>
         <div className="top-actions">
           <button className="language-toggle" type="button" onClick={toggleLanguage} aria-label={t.assistantAria} disabled={Boolean(transitionTarget)}>
             <span className="assistant-orb" aria-hidden="true">✦</span>
@@ -240,42 +247,31 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="hero" id="top">
-          <div className="hero-kicker"><span className="live-dot" aria-hidden="true" />{t.portfolio}</div>
-          <div className="hero-copy">
-            <p className="eyebrow">{t.location}</p>
-            <h1>{t.headlineA}<span>{t.headlineB}</span></h1>
-            <p className="hero-intro">{t.intro}</p>
-            <div className="hero-actions">
-              <a className="button primary" href="#profile">{t.enter}<span aria-hidden="true">↓</span></a>
-              <a className="text-link" href="https://github.com/sydrick-wu" target="_blank" rel="noreferrer">{t.github}<span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-          <div className="hero-scene">
-            <div className="scene-coordinate coordinate-one">49.4875° N</div>
-            <div className="scene-coordinate coordinate-two">08.4660° E</div>
-            <InteractivePortrait expression={expression} language={language} onExpressionChange={setExpression} />
-          </div>
-          <div className="hero-stats" aria-label={language === "zh" ? "个人亮点" : "Highlights"}>
-            {t.stats.map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}
-          </div>
-          <p className="scroll-cue">{t.scroll}<span aria-hidden="true">↓</span></p>
-        </section>
-
-        <section className="profile section-pad" id="profile">
-          <div className="section-heading">
-            <p className="eyebrow">{t.profileLabel}</p>
-            <h2>{t.profileTitle}</h2>
-            <p>{t.profileIntro}</p>
-          </div>
-          <div className="pillar-grid">
-            {t.pillars.map(([title, copy, tags], index) => (
-              <article className="pillar-card" key={title}>
-                <div className="pillar-top"><span>0{index + 1}</span><span aria-hidden="true">↗</span></div>
-                <h3>{title}</h3><p>{copy}</p>
-                <ul aria-label={language === "zh" ? `${title}主题` : `${title} topics`}>{tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
+        <section className="portrait-story" id="profile" ref={storyRef} data-stage={storyStage}>
+          <span className="top-anchor" id="top" />
+          <span className="story-anchor story-anchor-one" id="portrait-chapter-1" />
+          <div className="story-sticky">
+            <div className="story-copy-stack">
+              <article className={`story-copy story-intro ${storyStage === 0 ? "active" : ""}`} aria-hidden={storyStage !== 0}>
+                <h1>{t.headlineA}</h1>
+                <p className="hero-intro">{t.intro}</p>
+                <div className="hero-actions">
+                  <a className="button primary" href="#portrait-chapter-1">{t.enter}<span aria-hidden="true">↓</span></a>
+                  <a className="text-link" href="https://github.com/sydrick-wu" target="_blank" rel="noreferrer">{t.github}<span aria-hidden="true">↗</span></a>
+                </div>
               </article>
-            ))}
+
+              {t.pillars.map(([title, copy, tags], index) => (
+                <article className={`story-copy story-chapter ${storyStage === index + 1 ? "active" : ""}`} aria-hidden={storyStage !== index + 1} key={title}>
+                  <p className="eyebrow">0{index + 1} / {t.profileLabel.split(" / ")[1]}</p>
+                  <h2>{title}</h2>
+                  <p>{copy}</p>
+                  <ul aria-label={language === "zh" ? `${title}主题` : `${title} topics`}>{tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
+                </article>
+              ))}
+            </div>
+
+            <p className={`scroll-cue ${storyStage === 0 ? "active" : ""}`}>{t.scroll}<span aria-hidden="true">↓</span></p>
           </div>
         </section>
 

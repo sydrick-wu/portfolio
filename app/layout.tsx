@@ -14,25 +14,25 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 const title = "Sydrick Wu — Economics, Endurance & Technology";
-const description = "Sydrick Wu 的双语互动 3D 个人主页：经济学、科技实践与耐力运动。";
+const description = "Sydrick Wu’s interactive 3D portfolio across economics, technology and endurance sport.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sydrick-wu.github.io"),
   title,
   description,
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/portfolio/" },
   openGraph: {
     title,
     description,
     type: "website",
-    url: "/",
-    images: [{ url: "/og.jpg", width: 1200, height: 675, alt: "Sydrick Wu interactive 3D portfolio" }],
+    url: "/portfolio/",
+    images: [{ url: "/portfolio/og.jpg", width: 1200, height: 675, alt: "Sydrick Wu interactive 3D portfolio" }],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/og.jpg"],
+    images: ["/portfolio/og.jpg"],
   },
 };
 
