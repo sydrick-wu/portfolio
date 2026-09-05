@@ -1,10 +1,9 @@
 "use client";
 
+import { Html } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useTexture } from "@react-three/drei";
 import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
-import faceGeometry from "../data/sydrick-face-geometry.json";
 
 type Language = "en" | "zh";
 
@@ -13,180 +12,333 @@ type PortraitProps = {
   progressRef: MutableRefObject<number>;
 };
 
-const skin = "#765043";
-const skinShadow = "#654238";
-const hairDark = "#17110f";
-const hairMid = "#2b1d19";
-const hairWarm = "#56392e";
-const shirt = "#181514";
+type OrbitNodeProps = {
+  accent: string;
+  angle: number;
+  chapter: 1 | 2 | 3;
+  focusAngle: number;
+  label: string;
+  metric: string;
+  progressRef: MutableRefObject<number>;
+  radius: number;
+};
 
-function Hair() {
-  const loadedHairTexture = useTexture("./sydrick-hair-texture.png");
-  const hairTexture = useMemo(() => {
-    const texture = loadedHairTexture.clone();
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 8;
-    texture.needsUpdate = true;
-    return texture;
-  }, [loadedHairTexture]);
+const burgundy = "#6e2938";
+const brass = "#b79a68";
+const smoke = "#27201d";
+const ivory = "#f4eee3";
 
-  useEffect(() => () => hairTexture.dispose(), [hairTexture]);
+const nodeChapterRanges = {
+  1: [0.14, 0.39],
+  2: [0.39, 0.64],
+  3: [0.64, 1],
+} as const;
+
+function getChapterFocus(progress: number, chapter: 1 | 2 | 3) {
+  const [start, end] = nodeChapterRanges[chapter];
+  const fadeIn = THREE.MathUtils.smoothstep(progress, start - 0.045, start + 0.035);
+  const fadeOut = chapter === 3 ? 1 : 1 - THREE.MathUtils.smoothstep(progress, end - 0.035, end + 0.045);
+  return fadeIn * fadeOut;
+}
+
+function OrbitNode({ accent, angle, chapter, focusAngle, label, metric, progressRef, radius }: OrbitNodeProps) {
+  const group = useRef<THREE.Group>(null);
+  const sphereMaterial = useRef<THREE.MeshStandardMaterial>(null);
+  const haloMaterial = useRef<THREE.MeshBasicMaterial>(null);
+  const labelElement = useRef<HTMLDivElement>(null);
+  const currentAngle = useRef(angle);
+
+  useFrame((_, delta) => {
+    if (!group.current || !sphereMaterial.current || !haloMaterial.current) return;
+    const progress = THREE.MathUtils.clamp(progressRef.current, 0, 1);
+    const chapterMode = THREE.MathUtils.smoothstep(progress, 0.1, 0.17);
+    const focus = getChapterFocus(progress, chapter);
+    const ease = 1 - Math.pow(0.002, delta);
+    const targetScale = THREE.MathUtils.lerp(1, THREE.MathUtils.lerp(0.78, 1.24, focus), chapterMode);
+    const targetAngle = THREE.MathUtils.lerp(angle, focusAngle, focus * chapterMode);
+
+    currentAngle.current = THREE.MathUtils.lerp(currentAngle.current, targetAngle, ease);
+    group.current.position.set(
+      Math.cos(currentAngle.current) * radius,
+      Math.sin(currentAngle.current) * radius,
+      0,
+    );
+    group.current.scale.setScalar(THREE.MathUtils.lerp(group.current.scale.x, targetScale, ease));
+    sphereMaterial.current.opacity = THREE.MathUtils.lerp(1, THREE.MathUtils.lerp(0.38, 1, focus), chapterMode);
+    sphereMaterial.current.emissiveIntensity = THREE.MathUtils.lerp(0.34, THREE.MathUtils.lerp(0.12, 0.88, focus), chapterMode);
+    haloMaterial.current.opacity = THREE.MathUtils.lerp(0.68, THREE.MathUtils.lerp(0.2, 0.95, focus), chapterMode);
+    labelElement.current?.style.setProperty("--node-focus", focus.toFixed(3));
+    labelElement.current?.style.setProperty("--node-chapter-mode", chapterMode.toFixed(3));
+  });
 
   return (
-    <group>
-      <mesh position={[-0.1, 0.34, -0.5]} scale={[0.9, 0.94, 0.68]} castShadow>
-        <sphereGeometry args={[1, 64, 64]} />
-        <meshStandardMaterial color={hairDark} roughness={0.76} metalness={0.03} />
+    <group ref={group} position={[Math.cos(angle) * radius, Math.sin(angle) * radius, 0]}>
+      <mesh castShadow>
+        <sphereGeometry args={[0.075, 24, 24]} />
+        <meshStandardMaterial ref={sphereMaterial} color={accent} emissive={accent} emissiveIntensity={0.34} metalness={0.72} roughness={0.2} transparent />
       </mesh>
-      <mesh position={[-0.72, -0.61, -0.16]} rotation={[0.02, 0.06, -0.08]} scale={[0.3, 1.22, 0.34]} castShadow>
-        <sphereGeometry args={[1, 52, 52]} />
-        <meshStandardMaterial color={hairDark} roughness={0.7} metalness={0.03} />
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.13, 0.009, 8, 36]} />
+        <meshBasicMaterial ref={haloMaterial} color={ivory} transparent opacity={0.68} />
       </mesh>
-      <mesh position={[0.73, -0.6, -0.18]} rotation={[0.02, -0.06, 0.08]} scale={[0.3, 1.24, 0.34]} castShadow>
-        <sphereGeometry args={[1, 52, 52]} />
-        <meshStandardMaterial color={hairDark} roughness={0.7} metalness={0.03} />
-      </mesh>
-      <mesh position={[-0.79, -0.74, 0.02]} rotation={[0.02, 0.09, -0.05]} scale={[0.15, 1.02, 0.18]} castShadow>
-        <sphereGeometry args={[1, 40, 40]} />
-        <meshStandardMaterial color={hairWarm} roughness={0.71} metalness={0.02} />
-      </mesh>
-      <mesh position={[0.81, -0.72, 0]} rotation={[0.02, -0.09, 0.05]} scale={[0.15, 1.04, 0.18]} castShadow>
-        <sphereGeometry args={[1, 40, 40]} />
-        <meshStandardMaterial color={hairMid} roughness={0.71} metalness={0.02} />
-      </mesh>
-      <mesh position={[-0.16, -0.08, 0.82]} renderOrder={4}>
-        <planeGeometry args={[2.62, 3.15, 3, 5]} />
-        <meshBasicMaterial map={hairTexture} transparent alphaTest={0.035} depthWrite={false} toneMapped={false} side={THREE.DoubleSide} />
-      </mesh>
+      <Html center position={[0, 0.22, 0]} wrapperClass="orbit-html-root" zIndexRange={[8, 0]}>
+        <div ref={labelElement} className="orbit-label" style={{ "--orbit-accent": accent } as React.CSSProperties}>
+          <strong>{metric}</strong>
+          <span>{label}</span>
+        </div>
+      </Html>
     </group>
   );
 }
 
-function FaceSticker({
-  texture,
-  position,
-  rotation,
-  scale,
+function OrbitBand({
+  accent,
+  chapter,
+  children,
+  progressRef,
+  radius,
 }: {
-  texture: THREE.Texture;
-  position: [number, number, number];
-  rotation: [number, number, number];
-  scale: number;
+  accent: string;
+  chapter: 1 | 2 | 3;
+  children?: React.ReactNode;
+  progressRef: MutableRefObject<number>;
+  radius: number;
 }) {
+  const group = useRef<THREE.Group>(null);
+  const bandMaterial = useRef<THREE.MeshStandardMaterial>(null);
+  const highlightMaterial = useRef<THREE.MeshBasicMaterial>(null);
+
+  useFrame((_, delta) => {
+    if (!group.current || !bandMaterial.current || !highlightMaterial.current) return;
+    const progress = THREE.MathUtils.clamp(progressRef.current, 0, 1);
+    const chapterMode = THREE.MathUtils.smoothstep(progress, 0.1, 0.17);
+    const focus = getChapterFocus(progress, chapter);
+    const ease = 1 - Math.pow(0.002, delta);
+    const targetScale = THREE.MathUtils.lerp(1, THREE.MathUtils.lerp(0.985, 1.025, focus), chapterMode);
+    group.current.scale.setScalar(THREE.MathUtils.lerp(group.current.scale.x, targetScale, ease));
+    bandMaterial.current.emissiveIntensity = THREE.MathUtils.lerp(0.08, THREE.MathUtils.lerp(0.025, 0.34, focus), chapterMode);
+    highlightMaterial.current.opacity = THREE.MathUtils.lerp(0.48, THREE.MathUtils.lerp(0.18, 0.78, focus), chapterMode);
+  });
+
   return (
-    <mesh position={position} rotation={rotation} scale={scale} renderOrder={5}>
-      <planeGeometry args={[1.15, 0.72, 4, 3]} />
-      <meshBasicMaterial map={texture} transparent alphaTest={0.08} depthWrite={false} toneMapped={false} polygonOffset polygonOffsetFactor={-5} />
-    </mesh>
+    <group ref={group}>
+      <mesh castShadow>
+        <torusGeometry args={[radius, 0.034, 14, 180]} />
+        <meshStandardMaterial ref={bandMaterial} color={accent} emissive={accent} emissiveIntensity={0.08} metalness={0.84} roughness={0.24} />
+      </mesh>
+      <mesh scale={1.012}>
+        <torusGeometry args={[radius, 0.008, 8, 180]} />
+        <meshBasicMaterial ref={highlightMaterial} color={ivory} transparent opacity={0.48} />
+      </mesh>
+      {children}
+    </group>
   );
 }
 
-function SydrickAvatar({ progressRef }: PortraitProps) {
-  const avatar = useRef<THREE.Group>(null);
-  const mouse = useRef({ x: 0, y: 0 });
-  const loadedFaceTexture = useTexture("./sydrick-face-texture.webp");
-  const loadedDecals = useTexture([
-    "./stickers/economics.png",
-    "./stickers/build.png",
-    "./stickers/endurance.png",
-  ]);
+function GeographicOrbit({ language }: { language: Language }) {
+  const route = useMemo(
+    () => new THREE.CatmullRomCurve3(
+      [
+        new THREE.Vector3(-1.58, -0.66, -0.56),
+        new THREE.Vector3(-0.92, -1.13, -0.62),
+        new THREE.Vector3(0, -1.24, -0.64),
+        new THREE.Vector3(1.46, -0.7, -0.56),
+        new THREE.Vector3(1.7, 0.06, -0.58),
+        new THREE.Vector3(0.7, 0.88, -0.64),
+        new THREE.Vector3(-0.68, 0.88, -0.64),
+        new THREE.Vector3(-1.7, 0.04, -0.58),
+      ],
+      true,
+      "centripetal",
+      0.5,
+    ),
+    [],
+  );
+  const mannheim = useMemo(() => route.getPoint(0.01), [route]);
+  const zurich = useMemo(() => route.getPoint(0.36), [route]);
+  const shanghai = useMemo(() => route.getPoint(0.5), [route]);
 
-  const faceTexture = useMemo(() => {
-    const texture = loadedFaceTexture.clone();
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 8;
-    texture.needsUpdate = true;
-    return texture;
-  }, [loadedFaceTexture]);
-  const decals = useMemo(() => loadedDecals.map((loaded) => {
-    const texture = loaded.clone();
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 8;
-    texture.needsUpdate = true;
-    return texture;
-  }), [loadedDecals]);
+  return (
+    <group>
+      <mesh>
+        <tubeGeometry args={[route, 160, 0.011, 8, true]} />
+        <meshBasicMaterial color="#d2bd98" transparent opacity={0.64} depthWrite={false} />
+      </mesh>
+      <mesh position={mannheim}>
+        <sphereGeometry args={[0.03, 18, 18]} />
+        <meshBasicMaterial color={ivory} />
+      </mesh>
+      <mesh position={shanghai}>
+        <sphereGeometry args={[0.03, 18, 18]} />
+        <meshBasicMaterial color={ivory} />
+      </mesh>
+      <mesh position={zurich}>
+        <sphereGeometry args={[0.04, 20, 20]} />
+        <meshStandardMaterial color={brass} emissive={brass} emissiveIntensity={0.35} metalness={0.7} roughness={0.18} />
+      </mesh>
+      <Html center position={[mannheim.x - 0.62, mannheim.y - 0.22, mannheim.z]} wrapperClass="orbit-html-root" zIndexRange={[7, 0]}>
+        <span className="orbit-route-label">MANNHEIM · 49.48°N</span>
+      </Html>
+      <Html center position={[shanghai.x + 0.62, shanghai.y - 0.2, shanghai.z]} wrapperClass="orbit-html-root" zIndexRange={[7, 0]}>
+        <span className="orbit-route-label">{language === "zh" ? "上海" : "SHANGHAI"} · 31.23°N</span>
+      </Html>
+      <Html center position={[zurich.x + 0.58, zurich.y + 0.25, zurich.z]} wrapperClass="orbit-html-root" zIndexRange={[7, 0]}>
+        <span className="orbit-route-label orbit-route-zurich">{language === "zh" ? "苏黎世 · 2026 年 9 月起" : "ZURICH · FROM SEP 2026"}</span>
+      </Html>
+    </group>
+  );
+}
 
-  const mesh = useMemo(() => {
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.Float32BufferAttribute(faceGeometry.vertices.flat(), 3));
-    geometry.setAttribute("uv", new THREE.Float32BufferAttribute(faceGeometry.uvs.flat(), 2));
-    geometry.setIndex(faceGeometry.triangles.flat());
-    geometry.computeVertexNormals();
-    return geometry;
+function AmbientField() {
+  const positions = useMemo(() => {
+    const data = new Float32Array(150 * 3);
+    for (let index = 0; index < 150; index += 1) {
+      const angle = index * 2.399963;
+      const radius = 2.6 + (index % 9) * 0.16;
+      data[index * 3] = Math.cos(angle) * radius;
+      data[index * 3 + 1] = Math.sin(angle) * radius * 0.72;
+      data[index * 3 + 2] = -0.8 + ((index * 17) % 29) * 0.055;
+    }
+    return data;
   }, []);
 
+  return (
+    <points>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial color={ivory} size={0.018} transparent opacity={0.3} sizeAttenuation />
+    </points>
+  );
+}
+
+function PersonalOrbit({ language, progressRef }: PortraitProps) {
+  const { size } = useThree();
+  const root = useRef<THREE.Group>(null);
+  const economicsRing = useRef<THREE.Group>(null);
+  const builderRing = useRef<THREE.Group>(null);
+  const enduranceRing = useRef<THREE.Group>(null);
+  const core = useRef<THREE.Group>(null);
+  const pointer = useRef({ x: 0, y: 0 });
+  const reducedMotion = useRef(false);
+  const copy = language === "zh"
+    ? { economics: "经济学", builder: "构建者", endurance: "耐力运动", core: "个人坐标系统" }
+    : { economics: "ECONOMICS", builder: "BUILDER / TECHNOLOGY", endurance: "ENDURANCE", core: "PERSONAL COORDINATE SYSTEM" };
+
   useEffect(() => {
+    reducedMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const handlePointer = (event: PointerEvent) => {
-      mouse.current.x = event.clientX / window.innerWidth * 2 - 1;
-      mouse.current.y = -(event.clientY / window.innerHeight * 2 - 1);
+      pointer.current.x = event.clientX / window.innerWidth * 2 - 1;
+      pointer.current.y = -(event.clientY / window.innerHeight * 2 - 1);
     };
     window.addEventListener("pointermove", handlePointer, { passive: true });
     return () => window.removeEventListener("pointermove", handlePointer);
   }, []);
-  useEffect(() => () => mesh.dispose(), [mesh]);
-  useEffect(() => () => faceTexture.dispose(), [faceTexture]);
-  useEffect(() => () => decals.forEach((texture) => texture.dispose()), [decals]);
 
-  useFrame((_, delta) => {
-    if (!avatar.current) return;
-    const ease = 1 - Math.pow(0.002, delta);
-    const stageShift = -0.48 * THREE.MathUtils.smoothstep(progressRef.current, 0.11, 0.2);
-    avatar.current.position.x = THREE.MathUtils.lerp(avatar.current.position.x, stageShift, ease);
-    avatar.current.rotation.y = THREE.MathUtils.lerp(avatar.current.rotation.y, mouse.current.x * 0.045, ease);
-    avatar.current.rotation.x = THREE.MathUtils.lerp(avatar.current.rotation.x, mouse.current.y * 0.035 + Math.sin(performance.now() * 0.0008) * 0.006, ease);
+  useFrame((state, delta) => {
+    if (!root.current || !economicsRing.current || !builderRing.current || !enduranceRing.current || !core.current) return;
+    const progress = THREE.MathUtils.clamp(progressRef.current, 0, 1);
+    const compact = THREE.MathUtils.smoothstep(progress, 0.87, 1);
+    const chapterShift = THREE.MathUtils.smoothstep(progress, 0.1, 0.22);
+    const ease = 1 - Math.pow(0.004, delta);
+    const motion = reducedMotion.current ? 0.08 : 1;
+    const time = state.clock.elapsedTime * motion;
+    const isNarrow = size.width <= 720;
+    const landingX = isNarrow ? 0 : 0.72;
+    const landingY = isNarrow ? 0.68 : 0.08;
+    const expandedX = THREE.MathUtils.lerp(landingX, -0.52, chapterShift);
+    const expandedY = THREE.MathUtils.lerp(landingY, 0.08, chapterShift);
+    const expandedScale = THREE.MathUtils.lerp(isNarrow ? 0.88 : 1, 1, chapterShift);
+
+    root.current.position.x = THREE.MathUtils.lerp(root.current.position.x, THREE.MathUtils.lerp(expandedX, -1.75, compact), ease);
+    root.current.position.y = THREE.MathUtils.lerp(root.current.position.y, THREE.MathUtils.lerp(expandedY, 0.88, compact), ease);
+    const targetScale = THREE.MathUtils.lerp(expandedScale, 0.58, compact);
+    root.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), ease);
+    root.current.rotation.y = THREE.MathUtils.lerp(root.current.rotation.y, pointer.current.x * 0.13, ease);
+    root.current.rotation.x = THREE.MathUtils.lerp(root.current.rotation.x, pointer.current.y * 0.08, ease);
+
+    const economicsFocus = getChapterFocus(progress, 1);
+    const builderFocus = getChapterFocus(progress, 2);
+    const enduranceFocus = getChapterFocus(progress, 3);
+    const economicsNatural = 0.22 + Math.sin(time * 0.32) * 0.18 + progress * 0.28;
+    const builderNatural = -0.65 - Math.sin(time * 0.27 + 0.8) * 0.16 - progress * 0.22;
+    const enduranceNatural = 0.98 + Math.sin(time * 0.36 + 1.4) * 0.2 + progress * 0.26;
+
+    economicsRing.current.rotation.z = THREE.MathUtils.lerp(economicsNatural, 0.55, economicsFocus);
+    builderRing.current.rotation.z = THREE.MathUtils.lerp(builderNatural, -1.1, builderFocus);
+    enduranceRing.current.rotation.z = THREE.MathUtils.lerp(enduranceNatural, 1.6, enduranceFocus);
+    core.current.rotation.y = time * 0.12 + pointer.current.x * 0.14;
+    core.current.rotation.x = -time * 0.08 + pointer.current.y * 0.1;
   });
 
   return (
-    <group ref={avatar} position={[0, -0.22, 0]}>
-      <mesh position={[0, 0.08, -0.58]} scale={[0.85, 1.08, 0.68]} castShadow receiveShadow>
-        <sphereGeometry args={[1, 72, 72]} />
-        <meshStandardMaterial color={skinShadow} roughness={0.82} />
-      </mesh>
+    <group ref={root} position={[0, 0.08, 0]}>
+      <AmbientField />
 
-      <mesh geometry={mesh} position={[0, 0.08, 0.64]} scale={[0.96, 0.99, 1]} castShadow renderOrder={2}>
-        <meshBasicMaterial map={faceTexture} transparent alphaTest={0.035} side={THREE.DoubleSide} toneMapped={false} />
-      </mesh>
+      <group ref={economicsRing} rotation={[0.54, 0.24, 0.22]} scale={[1.2, 0.78, 1]}>
+        <OrbitBand accent={burgundy} chapter={1} progressRef={progressRef} radius={1.62}>
+          <OrbitNode accent={burgundy} angle={0.28} chapter={1} focusAngle={0.2} metric="8.20" label={language === "zh" ? "阿姆斯特丹绩点" : "UVA GPA"} progressRef={progressRef} radius={1.62} />
+        </OrbitBand>
+      </group>
 
-      <FaceSticker texture={decals[0]} position={[-0.22, 0.62, 0.91]} rotation={[0.01, -0.06, -0.12]} scale={0.25} />
-      <FaceSticker texture={decals[1]} position={[0.24, 0.06, 0.92]} rotation={[0.01, 0.07, 0.1]} scale={0.23} />
-      <FaceSticker texture={decals[2]} position={[-0.24, -0.14, 0.91]} rotation={[0.01, -0.07, -0.08]} scale={0.23} />
+      <group ref={builderRing} rotation={[-0.52, 0.72, -0.65]} scale={[1.12, 0.8, 1]}>
+        <OrbitBand accent={brass} chapter={2} progressRef={progressRef} radius={1.48}>
+          <OrbitNode accent={brass} angle={4.22} chapter={2} focusAngle={1.99} metric="18" label={language === "zh" ? "构建者 · 探索过的国家" : "BUILDER · COUNTRIES EXPLORED"} progressRef={progressRef} radius={1.48} />
+        </OrbitBand>
+      </group>
 
-      <mesh position={[-0.84, 0.08, -0.08]} scale={[0.16, 0.3, 0.13]} castShadow>
-        <sphereGeometry args={[1, 36, 36]} /><meshStandardMaterial color={skin} roughness={0.8} />
-      </mesh>
-      <mesh position={[0.84, 0.08, -0.08]} scale={[0.16, 0.3, 0.13]} castShadow>
-        <sphereGeometry args={[1, 36, 36]} /><meshStandardMaterial color={skin} roughness={0.8} />
-      </mesh>
+      <group ref={enduranceRing} rotation={[0.82, -0.48, 0.98]} scale={[1.18, 0.76, 1]}>
+        <OrbitBand accent={smoke} chapter={3} progressRef={progressRef} radius={1.36}>
+          <OrbitNode accent={ivory} angle={3.64} chapter={3} focusAngle={3.24} metric={language === "zh" ? "冠军" : "1ST"} label={copy.endurance} progressRef={progressRef} radius={1.36} />
+        </OrbitBand>
+      </group>
 
-      <Hair />
+      <GeographicOrbit language={language} />
 
-      <mesh position={[0, -1.35, -0.22]} scale={[0.36, 0.6, 0.34]} castShadow>
-        <cylinderGeometry args={[0.7, 0.78, 1.4, 44]} />
-        <meshStandardMaterial color={skin} roughness={0.82} />
-      </mesh>
-      <mesh position={[0, -2.03, -0.4]} scale={[1.4, 0.82, 0.72]} castShadow>
-        <sphereGeometry args={[1, 56, 56]} />
-        <meshStandardMaterial color={shirt} roughness={0.86} />
-      </mesh>
-      <mesh position={[0.58, -0.09, 0.25]} rotation={[0, Math.PI / 2, 0]}>
-        <torusGeometry args={[0.12, 0.012, 10, 36]} />
-        <meshStandardMaterial color="#b69a65" metalness={0.84} roughness={0.25} />
-      </mesh>
-
-      <mesh position={[0, -2.78, -0.9]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[1.1, 64]} />
-        <meshBasicMaterial color="#241b17" transparent opacity={0.24} depthWrite={false} />
-      </mesh>
+      <group ref={core} scale={1.12}>
+        <mesh castShadow>
+          <icosahedronGeometry args={[0.62, 3]} />
+          <meshPhysicalMaterial
+            color="#4d2931"
+            emissive={burgundy}
+            emissiveIntensity={0.05}
+            metalness={0.15}
+            roughness={0.22}
+            transparent
+            opacity={0.8}
+            transmission={0.08}
+            thickness={0.7}
+            ior={1.22}
+            clearcoat={0.38}
+            clearcoatRoughness={0.22}
+            depthWrite={false}
+          />
+        </mesh>
+        <mesh scale={1.035}>
+          <icosahedronGeometry args={[0.62, 2]} />
+          <meshBasicMaterial color={brass} wireframe transparent opacity={0.32} depthWrite={false} />
+        </mesh>
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[0.78, 0.012, 8, 90]} />
+          <meshBasicMaterial color={ivory} transparent opacity={0.38} />
+        </mesh>
+        <Html center position={[0, 0, 0.67]} wrapperClass="orbit-html-root" zIndexRange={[9, 0]}>
+          <div className="orbit-core-label">
+            <strong>SW</strong>
+            <span>{copy.core}</span>
+          </div>
+        </Html>
+      </group>
     </group>
   );
 }
 
 const cameraFrames = [
-  { at: 0, position: new THREE.Vector3(0, -0.03, 7.05), target: new THREE.Vector3(0, -0.46, 0) },
-  { at: 0.24, position: new THREE.Vector3(-0.22, 0.4, 3.8), target: new THREE.Vector3(-0.28, 0.48, 0.18) },
-  { at: 0.49, position: new THREE.Vector3(0.2, 0.13, 3.65), target: new THREE.Vector3(0.28, 0.12, 0.2) },
-  { at: 0.74, position: new THREE.Vector3(-0.16, -0.04, 3.58), target: new THREE.Vector3(-0.26, -0.11, 0.18) },
-  { at: 1, position: new THREE.Vector3(0, -0.06, 6.9), target: new THREE.Vector3(0, -0.48, 0) },
+  { at: 0, position: new THREE.Vector3(0, 0.12, 7.9), target: new THREE.Vector3(0, 0.05, 0) },
+  { at: 0.24, position: new THREE.Vector3(-0.55, 0.42, 5.2), target: new THREE.Vector3(-0.55, 0.46, 0) },
+  { at: 0.49, position: new THREE.Vector3(0.48, 0.18, 5.05), target: new THREE.Vector3(0.34, 0.13, 0) },
+  { at: 0.74, position: new THREE.Vector3(-0.18, -0.34, 4.95), target: new THREE.Vector3(-0.22, -0.32, 0) },
+  { at: 1, position: new THREE.Vector3(0, 0.14, 7.7), target: new THREE.Vector3(-0.58, 0.3, 0) },
 ];
 
 function sampleCamera(progress: number) {
@@ -219,19 +371,19 @@ function ScrollCamera({ progressRef }: { progressRef: MutableRefObject<number> }
 
 export function InteractivePortrait({ language, progressRef }: PortraitProps) {
   return (
-    <div className="character-stage">
+    <div className="character-stage orbit-stage">
       <Canvas
-        camera={{ position: [0, -0.03, 7.05], fov: 33, near: 0.1, far: 30 }}
+        camera={{ position: [0, 0.12, 7.9], fov: 34, near: 0.1, far: 30 }}
         dpr={[1, 1.65]}
         shadows
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}
       >
-        <ambientLight intensity={1.4} color="#f5e9da" />
-        <hemisphereLight intensity={1.2} color="#f7e7d4" groundColor="#3a2720" />
-        <directionalLight position={[4, 6, 5]} intensity={3.2} color="#f2c9a4" castShadow shadow-mapSize={[1024, 1024]} />
-        <directionalLight position={[-4, 2, 3]} intensity={1.7} color="#8d7378" />
-        <pointLight position={[0, -1, 3]} intensity={0.8} color="#b99868" />
-        <SydrickAvatar language={language} progressRef={progressRef} />
+        <ambientLight intensity={1.2} color="#f5e9da" />
+        <hemisphereLight intensity={1.05} color="#f7e7d4" groundColor="#251b18" />
+        <directionalLight position={[4, 6, 5]} intensity={3.5} color="#f1cda8" castShadow shadow-mapSize={[1024, 1024]} />
+        <directionalLight position={[-4, 1, 3]} intensity={2.2} color="#7d3347" />
+        <pointLight position={[0, -1, 4]} intensity={1.35} color="#b79a68" />
+        <PersonalOrbit language={language} progressRef={progressRef} />
         <ScrollCamera progressRef={progressRef} />
       </Canvas>
     </div>

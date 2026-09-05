@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument-sans",
   subsets: ["latin"],
+  weight: "variable",
+  axes: ["wdth"],
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -43,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}>
+      <body className={`${instrumentSans.variable} ${ibmPlexMono.variable}`}>
         {children}
       </body>
     </html>
