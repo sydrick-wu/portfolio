@@ -45,27 +45,61 @@ const content = {
       ["2025 — 2027", "University of Mannheim", "Master of Science (MSc) in Economics · Expected 2027", {
         summary: "Provisional average: 1.8.",
         groups: [
-          { label: "Top grades", items: ["Financial Economics — 1.0", "Topics in Macrofinance — 1.3"] },
-          { label: "Selected coursework", items: ["Advanced Macroeconomics", "Advanced Econometrics", "Macroeconometrics", "Household Finance & Macroeconomics"] },
+          { label: "Selected results · 1.0 is the highest grade", courses: [
+            ["Financial Economics", "1.0"],
+            ["Topics in Macrofinance (Seminar)", "1.3"],
+            ["Advanced Macroeconomics", "1.7"],
+            ["Macroeconometrics", "1.7"],
+            ["Household Finance and Macroeconomics", "1.7"],
+          ] },
         ],
       }],
       ["2023 — 2024", "Y Combinator China · MiraclePlus", "Venture Capital · Founder Relations · User Growth", "Top 5% in deal sourcing; sourced and engaged 100+ early-stage technology startups, supporting four angel investments. Contributed to due diligence and Demo Day; later helped grow Startup School to 13,000+ enrollments."],
       ["2023", "University of Amsterdam", "Exchange · Economics & Business", {
-        summary: "GPA: 8.20/10.",
+        summary: "Grade point average (GPA): 8.20/10 · Top 4%.",
         groups: [
-          { label: "Top grades", items: ["Mathematics 2 for Economics — 9.5", "Applied Econometrics for Business — 8.5", "Corporate Finance — 8.0"] },
-          { label: "Additional coursework", items: ["Macroeconomics 2", "Information & Data Management"] },
+          { label: "High marks · out of 10", courses: [
+            ["Mathematics 2 for Economics", "9.5"],
+            ["Applied Econometrics for Business", "8.5"],
+            ["Corporate Finance", "8.0"],
+          ] },
         ],
       }],
       ["2020 — 2025", "University of Nottingham", "Bachelor of Science (Honours) in Economics", {
         summary: "Final average: 71/100 · First Class Honours · Top 10%.",
         groups: [
-          { label: "High marks", items: ["Introduction to Microeconomics — 80", "Machine Learning — 78", "Advanced Experimental & Behavioural Economics — 74", "Econometrics I — 73", "Dissertation — 73"] },
-          { label: "Honours", items: ["Nottingham Advantage Award", "Research Assistant to the Dean across five industry projects"] },
+          { label: "2021–25 high marks · out of 100", courses: [
+            ["Introduction to Microeconomics", "80"],
+            ["Machine Learning", "78"],
+            ["Advanced Experimental and Behavioural Economics", "74"],
+            ["Econometrics I", "73"],
+            ["Dissertation", "73"],
+            ["Advanced Macroeconomics", "72"],
+            ["Growth and Development in Long-Run Historical Perspective", "71"],
+            ["Business Finance", "70"],
+          ] },
+          { label: "2020–21 high marks · out of 100", courses: [
+            ["Introduction to Business Economics", "91"],
+            ["Introduction to Information Technology", "90"],
+            ["Introduction to Business & Management", "83"],
+            ["Oral Communication Skills A", "81"],
+            ["Undergraduate Reading and Writing in Academic Contexts", "72"],
+            ["Oral Communication Skills B", "70"],
+          ] },
+          { label: "Nottingham Advantage Award · Recipient", items: ["Global Mentorship Program", "Nottingham University Business School China Consulting", "Writing Lab"] },
+          { label: "Research & university sport", items: ["Research Assistant to the Dean of the Graduate School across five industry projects", "University of Nottingham Ningbo China half-marathon record holder", "University touch rugby varsity · Wing"] },
         ],
       }],
       ["2022", "GroupM · Unilever Team", "Data, Insight & Analytics", "Built three Power BI dashboards using Nielsen and planning datasets; automated reporting with Robotic Process Automation (RPA); delivered audience and campaign insights for Unilever."],
       ["2021", "Feilan Advertising", "Global E-commerce Marketing", "Used social data to refine overseas positioning; produced 100+ short videos and 200+ product visuals, helping add 7,000+ followers across overseas channels."],
+      ["Selected", "Recognition & selected programmes", "Programme selections · Competitions · Creative work", {
+        summary: "Selected programmes and activities alongside my studies.",
+        groups: [
+          { label: "Programme selections · 2018", items: ["Selected for the Harvard Summit for Young Leaders in China", "Selected for X Week · Harvard–Yale–Massachusetts Institute of Technology immersion"] },
+          { label: "Competition projects", items: ["Massachusetts Institute of Technology Energy Hackathon · Collaborated with three students on an airline energy-cost project, 2018", "L’Oréal Global Business Strategy Competition · Developed a data-driven pop-up retail proposal, 2021"] },
+          { label: "Creative credentials", items: ["Signed photographer · Orient IC and Tuchong", "B-Level sketching certificate"] },
+        ],
+      }],
     ],
     paceLabel: "03 / Pace",
     paceTitle: "The body is part of the work.",
@@ -73,11 +107,16 @@ const content = {
     raceLog: "Race log",
     raceYear: "2025–2026 selection",
     paceModes: ["SWIM", "RIDE", "RUN"],
+    sportingRecognition: "Team & recognition",
+    sportingHonours: ["Sponsored triathlete · Beijing Huanyu Cycling Team", "University of Nottingham Ningbo China half-marathon record holder"],
     races: [
       ["48th", "ADAC Cycling Tour Classic", "48 / 1,660 overall · Heilbronn · 117.97 km · 3:10:37 · 23 Aug 2026"],
       ["1:19:50", "Frankfurter Mainova Half Marathon", "Frankfurt · Personal best · 22 Mar 2026"],
       ["1st", "Qiandao Lake Triathlon", "18–29 age group · Olympic distance"],
       ["4th", "Taizhou Asia Triathlon Cup", "18–29 age group · Sprint distance"],
+      ["5th", "STC Shanghai Dishui Lake Triathlon", "18+ age group · Sprint distance · 2025"],
+      ["3rd", "Duke Kunshan University Track Invitational", "Bronze medal · 2 miles · 2025"],
+      ["2nd", "Duke Kunshan University Track Invitational", "Silver medal · Medley relay · 2025"],
       ["1:26:09", "Half Marathon Asian Championship", "Half marathon · 2025"],
       ["3rd", "Ningbo Half Marathon", "Men’s 10 km · 2025"],
     ],
@@ -128,27 +167,61 @@ const content = {
       ["2025 — 2027", "曼海姆大学", "经济学理学硕士 · 预计 2027 年毕业", {
         summary: "当前平均分：1.8。",
         groups: [
-          { label: "高分课程", items: ["金融经济学 — 1.0", "宏观金融专题 — 1.3"] },
-          { label: "精选课程", items: ["高级宏观经济学", "高级计量经济学", "宏观计量经济学", "家庭金融与宏观经济学"] },
+          { label: "精选成绩 · 德国评分制，1.0 为最高分", courses: [
+            ["金融经济学", "1.0"],
+            ["宏观金融专题（研讨课）", "1.3"],
+            ["高级宏观经济学", "1.7"],
+            ["宏观计量经济学", "1.7"],
+            ["家庭金融与宏观经济学", "1.7"],
+          ] },
         ],
       }],
       ["2023 — 2024", "Y Combinator 中国 · 奇绩创坛", "风险投资 · 创始人关系 · 用户增长", "项目搜寻表现位列实习生前 5%；接触并筛选 100+ 家早期科技创业公司，支持 4 笔天使轮投资。参与尽职调查与 Demo Day，随后协助 Startup School 获得 13,000+ 报名。"],
       ["2023", "阿姆斯特丹大学", "交换学习 · 经济学与商业", {
-        summary: "绩点：8.20/10。",
+        summary: "绩点：8.20/10 · 前 4%。",
         groups: [
-          { label: "高分课程", items: ["经济学数学 — 9.5", "商业应用计量经济学 — 8.5", "公司金融 — 8.0"] },
-          { label: "其他课程", items: ["宏观经济学 2", "信息与数据管理"] },
+          { label: "高分课程 · 满分 10 分", courses: [
+            ["经济学数学 2", "9.5"],
+            ["商业应用计量经济学", "8.5"],
+            ["公司金融", "8.0"],
+          ] },
         ],
       }],
       ["2020 — 2025", "诺丁汉大学", "经济学荣誉理学学士", {
         summary: "最终均分：71/100 · 一等荣誉学位 · 前 10%。",
         groups: [
-          { label: "高分课程", items: ["微观经济学导论 — 80", "机器学习 — 78", "高级实验与行为经济学 — 74", "计量经济学 I — 73", "毕业论文 — 73"] },
-          { label: "荣誉经历", items: ["Nottingham Advantage Award（诺丁汉优势奖）", "担任研究生院院长研究助理，参与 5 个产业研究项目"] },
+          { label: "2021–25 年高分课程 · 满分 100 分", courses: [
+            ["微观经济学导论", "80"],
+            ["机器学习", "78"],
+            ["高级实验与行为经济学", "74"],
+            ["计量经济学 I", "73"],
+            ["毕业论文", "73"],
+            ["高级宏观经济学", "72"],
+            ["长期历史视角下的增长与发展", "71"],
+            ["商业金融", "70"],
+          ] },
+          { label: "2020–21 年高分课程 · 满分 100 分", courses: [
+            ["商业经济学导论", "91"],
+            ["信息技术导论", "90"],
+            ["商业与管理导论", "83"],
+            ["口语沟通技能 A", "81"],
+            ["本科学术语境中的阅读与写作", "72"],
+            ["口语沟通技能 B", "70"],
+          ] },
+          { label: "诺丁汉优势奖 · 获奖项目", items: ["全球导师计划", "诺丁汉大学商学院中国咨询项目", "写作实验室"] },
+          { label: "研究与校队经历", items: ["担任研究生院院长研究助理，参与 5 个产业研究项目", "宁波诺丁汉大学半程马拉松纪录保持者", "校触式橄榄球队 · 边锋"] },
         ],
       }],
       ["2022", "群邑 · 联合利华团队", "数据、洞察与分析", "使用 Nielsen 与媒介规划数据搭建 3 个 Power BI 仪表板；通过机器人流程自动化（RPA）提升报告效率；为联合利华提供受众与营销活动洞察。"],
       ["2021", "飞岚广告", "全球电商营销", "利用社交媒体数据优化海外市场定位；制作 100+ 支短视频和 200+ 张产品视觉素材，帮助海外账号新增 7,000+ 名粉丝。"],
+      ["精选", "荣誉与精选项目", "项目入选 · 竞赛参与 · 创作资质", {
+        summary: "学习期间参与的精选项目与活动。",
+        groups: [
+          { label: "项目入选 · 2018 年", items: ["入选哈佛中美学生领袖峰会", "入选 X Week · 哈佛大学、耶鲁大学与麻省理工学院交流项目"] },
+          { label: "竞赛项目", items: ["麻省理工学院能源黑客松 · 与三名学生合作研究航空能源成本项目，2018 年", "欧莱雅全球商业策略竞赛 · 提出基于数据分析的快闪零售方案，2021 年"] },
+          { label: "创作资质", items: ["东方 IC 与图虫签约摄影师", "素描 B 级证书"] },
+        ],
+      }],
     ],
     paceLabel: "03 / 耐力",
     paceTitle: "身体，也是作品的一部分。",
@@ -156,11 +229,16 @@ const content = {
     raceLog: "赛事记录",
     raceYear: "2025–2026 精选",
     paceModes: ["游泳", "骑行", "跑步"],
+    sportingRecognition: "车队与荣誉",
+    sportingHonours: ["Beijing Huanyu Cycling Team 赞助铁三运动员", "宁波诺丁汉大学半程马拉松纪录保持者"],
     races: [
       ["第 48 名", "ADAC 自行车巡回赛经典赛", "总排名 48 / 1,660 · 海尔布隆 · 117.97 公里 · 3:10:37 · 2026 年 8 月 23 日"],
       ["1:19:50", "法兰克福 Mainova 半程马拉松", "个人最佳 · 2026 年 3 月 22 日"],
       ["冠军", "千岛湖铁人三项公开赛", "18–29 岁年龄组 · 奥林匹克距离"],
       ["第 4 名", "台州亚洲铁人三项杯", "18–29 岁年龄组 · 短距离"],
+      ["第 5 名", "上海滴水湖铁人三项赛", "18 岁以上年龄组 · 短距离 · 2025 年"],
+      ["季军", "昆山杜克大学田径邀请赛", "铜牌 · 两英里 · 2025 年"],
+      ["亚军", "昆山杜克大学田径邀请赛", "银牌 · 混合接力 · 2025 年"],
       ["1:26:09", "亚洲半程马拉松锦标赛", "半程马拉松 · 2025"],
       ["季军", "宁波半程马拉松", "男子 10 公里 · 2025"],
     ],
@@ -337,7 +415,7 @@ export default function Home() {
           </div>
           <div className="timeline">
             {t.timeline.map(([years, place, role, note], index) => (
-              <article className="timeline-row" key={`${years}-${place}`}>
+              <article className={`timeline-row${typeof note === "string" ? "" : " timeline-row-expanded"}`} key={`${years}-${place}`}>
                 <div className="timeline-index">0{index + 1}</div><div className="timeline-years">{years}</div>
                 <div className="timeline-main">
                   <h3>{place}</h3><p className="timeline-role">{role}</p>
@@ -346,8 +424,14 @@ export default function Home() {
                       <p className="timeline-note-summary">{note.summary}</p>
                       {note.groups.map((group, groupIndex) => (
                         <div className="timeline-note-group" key={`${place}-${groupIndex}`}>
-                          {"label" in group && group.label ? <p className="timeline-note-label">{group.label}</p> : null}
-                          <ul className="timeline-note-list">{group.items.map((item) => <li key={item}>{item}</li>)}</ul>
+                          {"label" in group && group.label ? <h4 className="timeline-note-label">{group.label}</h4> : null}
+                          {"courses" in group ? (
+                            <ul className="course-results">{group.courses.map(([course, grade]) => (
+                              <li key={course}><span>{course}</span><strong>{grade}</strong></li>
+                            ))}</ul>
+                          ) : (
+                            <ul className="timeline-note-list">{group.items.map((item) => <li key={item}>{item}</li>)}</ul>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -364,10 +448,14 @@ export default function Home() {
           <div className="section-heading pace-heading">
             <p className="eyebrow">{t.paceLabel}</p><h2>{t.paceTitle}</h2><p>{t.paceIntro}</p>
           </div>
+          <div className="sporting-recognition">
+            <h3>{t.sportingRecognition}</h3>
+            <ul>{t.sportingHonours.map((honour) => <li key={honour}>{honour}</li>)}</ul>
+          </div>
           <div className="race-board">
             <div className="race-board-title"><span>{t.raceLog}</span><span>{t.raceYear}</span></div>
             {t.races.map(([result, event, detail]) => (
-              <article className="race-row" key={event}><strong>{result}</strong><h3>{event}</h3><p>{detail}</p><span aria-hidden="true">↗</span></article>
+              <article className="race-row" key={`${event}-${detail}`}><strong>{result}</strong><h3>{event}</h3><p>{detail}</p><span aria-hidden="true">↗</span></article>
             ))}
           </div>
           <div className="pace-quote"><p>{t.quote}</p><span>{t.principle}</span></div>

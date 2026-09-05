@@ -37,6 +37,9 @@ test("server-renders Sydrick's finished portfolio", async () => {
   assert.doesNotMatch(html, /系统思考。|切换至英文|好，现在开始我用中文介绍/);
   assert.match(html, /University of Mannheim/);
   assert.match(html, /University of Zurich/);
+  assert.match(html, /<span>Introduction to Business Economics<\/span><strong>91<\/strong>/);
+  assert.match(html, /<span>Macroeconometrics<\/span><strong>1\.7<\/strong>/);
+  assert.doesNotMatch(html, /Advanced Time Series Econometrics|Information and Data Management|Intermediate Mathematical Economics/);
   assert.match(html, /Sep 2026/);
   assert.match(html, /Qiandao Lake Triathlon/);
   assert.match(html, /id="profile"/);
@@ -96,13 +99,9 @@ test("keeps the experience responsive and accessible", async () => {
   assert.match(page, /"Machine Learning in Economics", "Global Poverty and Economic Development — Cases"/);
   assert.match(page, /items: \["公共债务管理", "神经经济学原理", "劳动经济学"/);
   assert.match(page, /"经济学中的机器学习", "全球贫困与经济发展案例"/);
-  assert.match(page, /items: \["Financial Economics — 1\.0", "Topics in Macrofinance — 1\.3"\]/);
-  assert.match(page, /GPA: 8\.20\/10/);
-  assert.match(page, /items: \["Mathematics 2 for Economics — 9\.5", "Applied Econometrics for Business — 8\.5", "Corporate Finance — 8\.0"\]/);
   assert.match(page, /Final average: 71\/100 · First Class Honours · Top 10%/);
-  assert.match(page, /Machine Learning — 78/);
   assert.match(page, /Nottingham Advantage Award/);
-  assert.match(page, /Research Assistant to the Dean across five industry projects/);
+  assert.match(page, /Research Assistant to the Dean of the Graduate School across five industry projects/);
   assert.match(page, /Top 5% in deal sourcing/);
   assert.match(page, /Startup School to 13,000\+ enrollments/);
   assert.match(page, /Robotic Process Automation \(RPA\)/);
