@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { InteractivePortrait } from "./components/InteractivePortrait";
+import { EditorialPhoto, PortraitEditorial, RaceEditorial } from "./components/EditorialPhotos";
 
 type Language = "en" | "zh";
 
@@ -409,6 +410,8 @@ export default function Home() {
           </div>
         </section>
 
+        <PortraitEditorial language={language} />
+
         <section className="path section-pad" id="path">
           <div className="section-heading path-heading">
             <p className="eyebrow">{t.pathLabel}</p><h2>{t.pathTitle}</h2><p>{t.pathIntro}</p>
@@ -419,6 +422,7 @@ export default function Home() {
                 <div className="timeline-index">0{index + 1}</div><div className="timeline-years">{years}</div>
                 <div className="timeline-main">
                   <h3>{place}</h3><p className="timeline-role">{role}</p>
+                  {index === 4 && <EditorialPhoto name="graduation" language={language} className="education-photo" caption={language === "en" ? "University of Nottingham · Graduation" : "诺丁汉大学 · 毕业典礼"} sizes="(max-width: 720px) 80vw, 48vw" />}
                   {typeof note === "string" ? <p className="timeline-note">{note}</p> : (
                     <div className="timeline-note timeline-note-structured">
                       <p className="timeline-note-summary">{note.summary}</p>
@@ -436,6 +440,7 @@ export default function Home() {
                       ))}
                     </div>
                   )}
+                  {index === 7 && <EditorialPhoto name="heritage" language={language} className="heritage-photo" caption={language === "en" ? "A portrait in traditional dress" : "传统服饰肖像"} sizes="(max-width: 720px) 70vw, 28vw" />}
                 </div>
                 <span className="timeline-plus" aria-hidden="true">+</span>
               </article>
@@ -448,6 +453,7 @@ export default function Home() {
           <div className="section-heading pace-heading">
             <p className="eyebrow">{t.paceLabel}</p><h2>{t.paceTitle}</h2><p>{t.paceIntro}</p>
           </div>
+          <RaceEditorial language={language} />
           <div className="sporting-recognition">
             <h3>{t.sportingRecognition}</h3>
             <ul>{t.sportingHonours.map((honour) => <li key={honour}>{honour}</li>)}</ul>
@@ -462,7 +468,12 @@ export default function Home() {
         </section>
 
         <section className="contact section-pad" id="contact">
+          <div className="contact-editorial-layout">
+          <div className="contact-editorial-copy">
           <p className="eyebrow">{t.contactLabel}</p><h2>{t.contactTitle}</h2><p className="contact-copy">{t.contactIntro}</p>
+          </div>
+          <EditorialPhoto name="coast" language={language} className="contact-photo" caption={language === "en" ? "By the sea · At dusk" : "海边 · 日暮时分"} sizes="(max-width: 720px) 62vw, 25vw" />
+          </div>
           <a className="contact-email" href="mailto:sydrick.wu@gmail.com">sydrick.wu@gmail.com <span aria-hidden="true">↗</span></a>
           <div className="social-row">
             {socialLinks.map((href, index) => <a href={href} key={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">{t.socialLabels[index]}<span aria-hidden="true">↗</span></a>)}

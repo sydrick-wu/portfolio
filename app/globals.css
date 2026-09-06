@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./editorial.css";
 
 :root {
   --ink: #181411;

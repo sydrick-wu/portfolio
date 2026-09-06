@@ -156,3 +156,24 @@ test("keeps the experience responsive and accessible", async () => {
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   await assert.rejects(access(new URL("../app/_sites-preview", import.meta.url)));
 });
+
+test("renders the curated photographs with responsive local assets and English captions", async () => {
+  const html = await (await render()).text();
+  const names = ["portrait", "monochrome", "graduation", "heritage", "climb", "peloton", "finish", "coast"];
+  const images = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => tag);
+  assert.equal(images.length, names.length);
+  for (const name of names) {
+    const tag = images.find((image) => image.includes(`./photos/${name}-1440.webp`));
+    assert.ok(tag, `Missing photograph: ${name}`);
+    assert.match(tag, /alt="[^"]+"/);
+    assert.match(tag, /loading="lazy"/);
+    assert.match(tag, /width="1440"/);
+    assert.match(tag, /height="\d+"/);
+    assert.ok(html.includes(`./photos/${name}-640.webp 640w`));
+    await Promise.all([640, 1440].map((width) => access(new URL(`../public/photos/${name}-${width}.webp`, import.meta.url))));
+  }
+  assert.match(html, /Amsterdam · Along the canals/);
+  assert.match(html, /University of Nottingham · Graduation/);
+  assert.match(html, /03 \/ Across the line/);
+  assert.doesNotMatch(html, /个人影像|毕业典礼|终点之后|日暮时分/);
+});
