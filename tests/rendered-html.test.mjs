@@ -2,6 +2,26 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
+test("integrates the lazy black-hole host with motion controls and target-language labels", async () => {
+  const html = await (await render()).text();
+  assert.match(html, /Where paths meet\./);
+  assert.match(html, /Pause motion/);
+  assert.match(html, /切换中文/);
+  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  assert.match(page, /assistantAction: "Switch to English"/);
+  const host = await readFile(new URL("../components/ui/optimized-black-hole.tsx", import.meta.url), "utf8");
+  assert.match(host, /import\("\.\/optimized-black-hole-utils\/renderer"\)/);
+  assert.match(host, /IntersectionObserver/);
+  assert.match(host, /rendererRef.current\?\.dispose/);
+  assert.match(host, /touch-pan-y/);
+  const renderer = await readFile(new URL("../components/ui/optimized-black-hole-utils/renderer.ts", import.meta.url), "utf8");
+  for (const feature of ["prefers-reduced-motion", "visibilitychange", "ResizeObserver", "1000 / 30", "material.dispose()", "geometry.dispose()"])
+    assert.ok(renderer.includes(feature), `Missing renderer safeguard ${feature}`);
+  const portrait = await readFile(new URL("../app/components/InteractivePortrait.tsx", import.meta.url), "utf8");
+  assert.match(portrait, /readingFocus.current = sectionFocus.current \?\? progress/);
+  assert.match(portrait, /frameloop=\{active \? "always" : "never"\}/);
+});
+
 test("provides bilingual chapter links, motion-aware navigation and a local contact action", async () => {
   const html = await (await render()).text();
   const navigation = await readFile(new URL("../app/components/ChapterNavigation.tsx", import.meta.url), "utf8");
@@ -51,7 +71,7 @@ test("server-renders Sydrick's finished portfolio", async () => {
   assert.match(html, /<h1 aria-label="About Sydrick"><strong>Sydrick<\/strong><\/h1>/);
   assert.doesNotMatch(html, /Think in systems|Move with intent/);
   assert.match(html, /AI ASSISTANT/);
-  assert.match(html, /INTRODUCE IN CHINESE/);
+  assert.match(html, /切换中文/);
   assert.doesNotMatch(html, /系统思考。|切换至英文|好，现在开始我用中文介绍/);
   assert.match(html, /University of Mannheim/);
   assert.match(html, /University of Zurich/);

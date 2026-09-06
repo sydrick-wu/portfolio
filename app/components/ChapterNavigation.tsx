@@ -23,6 +23,7 @@ export function jumpToSection(event: MouseEvent<HTMLAnchorElement>) {
 
 export function ChapterNavigation({ language }: { language: "en" | "zh" }) {
   const [active, setActive] = useState("");
+  const [fraction, setFraction] = useState(0);
   useEffect(() => {
     let frame = 0;
     const update = () => {
@@ -32,6 +33,8 @@ export function ChapterNavigation({ language }: { language: "en" | "zh" }) {
         return rect && rect.top <= marker && rect.bottom > marker;
       });
       setActive(current?.id ?? "");
+      const rect = current && document.getElementById(current.id)?.getBoundingClientRect();
+      setFraction(rect ? Math.max(0, Math.min(1, (marker - rect.top) / rect.height)) : 0);
     };
     const queue = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
     update();
@@ -41,7 +44,14 @@ export function ChapterNavigation({ language }: { language: "en" | "zh" }) {
   }, []);
   return (
     <nav className="chapter-navigation" aria-label={language === "en" ? "Chapter navigation" : "章节导航"}>
-      <a className="chapter-home" href="#top" onClick={jumpToSection} aria-label={language === "en" ? "Sydrick Wu — back to top" : "Sydrick Wu — 返回顶部"}>Sydrick Wu<span aria-hidden="true"> / </span></a>
+      <a className="chapter-home" href="#top" onClick={jumpToSection} aria-label={language === "en" ? "Sydrick Wu — back to top" : "Sydrick Wu — 返回顶部"}>Sydrick Wu
+        <svg className="chapter-orbit" viewBox="0 0 36 36" aria-hidden="true" data-chapter={active}>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" opacity=".2" />
+          <ellipse cx="18" cy="18" rx="8" ry="15" fill="none" stroke="currentColor" opacity=".35" transform="rotate(40 18 18)" />
+          <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" strokeWidth="2" pathLength="100" strokeDasharray={`${fraction * 100} 100`} transform="rotate(-90 18 18)" />
+          <circle cx="18" cy="18" r="3" fill="currentColor" />
+        </svg>
+      </a>
       <div className="chapter-links">
         {chapters.map(({ id, en, zh }) => <a key={id} href={`#${id}`} onClick={jumpToSection} aria-current={active === id ? "location" : undefined}>{language === "en" ? en : zh}</a>)}
       </div>

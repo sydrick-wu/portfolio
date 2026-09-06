@@ -5,13 +5,14 @@ import { InteractivePortrait } from "./components/InteractivePortrait";
 import { EditorialPhoto, PortraitEditorial, RaceEditorial } from "./components/EditorialPhotos";
 import { WorkExperience } from "./components/WorkExperience";
 import { ChapterNavigation, jumpToSection } from "./components/ChapterNavigation";
+import { OrbitFinale } from "./components/OrbitFinale";
 
 type Language = "en" | "zh";
 
 const content = {
   en: {
     assistantLabel: "AI ASSISTANT",
-    assistantAction: "INTRODUCE IN CHINESE",
+    assistantAction: "切换中文",
     assistantAria: "Ask the AI assistant to continue in Chinese",
     nav: ["Profile", "Path", "Pace", "Contact"],
     descriptor: "Economics · Endurance · Technology",
@@ -132,7 +133,7 @@ const content = {
   },
   zh: {
     assistantLabel: "智能助手",
-    assistantAction: "切换至英文",
+    assistantAction: "Switch to English",
     assistantAria: "请智能助手改用英文介绍",
     nav: ["简介", "经历", "耐力", "联系"],
     descriptor: "经济学 · 耐力运动 · 科技",
@@ -483,6 +484,7 @@ export default function Home() {
           <div className="pace-quote"><p>{t.quote}</p><span>{t.principle}</span></div>
         </section>
 
+        <OrbitFinale language={language} />
         <section className="contact section-pad" id="contact" tabIndex={-1}>
           <div className="contact-editorial-layout">
           <div className="contact-editorial-copy">

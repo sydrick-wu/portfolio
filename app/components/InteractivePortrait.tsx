@@ -2,7 +2,7 @@
 
 import { Html } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
+import { useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
 
 type Language = "en" | "zh";
@@ -23,9 +23,9 @@ type OrbitNodeProps = {
   radius: number;
 };
 
-const graphite = "#393939";
-const silver = "#9d9d9d";
-const smoke = "#212121";
+const graphite = "#719b9e";
+const silver = "#b9bed0";
+const smoke = "#62697b";
 const white = "#eeeeee";
 
 const nodeChapterRanges = {
@@ -105,7 +105,7 @@ function OrbitBand({
   radius: number;
 }) {
   const group = useRef<THREE.Group>(null);
-  const bandMaterial = useRef<THREE.MeshStandardMaterial>(null);
+  const bandMaterial = useRef<THREE.MeshPhysicalMaterial>(null);
   const highlightMaterial = useRef<THREE.MeshBasicMaterial>(null);
 
   useFrame((_, delta) => {
@@ -124,7 +124,7 @@ function OrbitBand({
     <group ref={group}>
       <mesh castShadow>
         <torusGeometry args={[radius, 0.034, 14, 180]} />
-        <meshStandardMaterial ref={bandMaterial} color={accent} emissive={accent} emissiveIntensity={0.08} metalness={0.84} roughness={0.24} />
+        <meshPhysicalMaterial ref={bandMaterial} color={accent} emissive={accent} emissiveIntensity={0.08} metalness={0.86} roughness={0.2} clearcoat={1} iridescence={0.38} iridescenceIOR={1.3} iridescenceThicknessRange={[180, 360]} />
       </mesh>
       <mesh scale={1.012}>
         <torusGeometry args={[radius, 0.008, 8, 180]} />
@@ -221,6 +221,9 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
   const core = useRef<THREE.Group>(null);
   const pointer = useRef({ x: 0, y: 0 });
   const reducedMotion = useRef(false);
+  const readingFocus = useRef(0);
+  const sectionFocus = useRef<number | null>(null);
+  const [activeSection, setActiveSection] = useState("");
   const copy = language === "zh"
     ? { economics: "经济学", builder: "构建者", endurance: "耐力运动", core: "个人坐标系统" }
     : { economics: "ECONOMICS", builder: "BUILDER / TECHNOLOGY", endurance: "ENDURANCE", core: "PERSONAL COORDINATE SYSTEM" };
@@ -235,32 +238,50 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
     return () => window.removeEventListener("pointermove", handlePointer);
   }, []);
 
+  useEffect(() => {
+    const track = () => {
+      const marker = innerHeight * 0.35;
+      const sections = [["path", .26], ["experience", .51], ["pace", .78]] as const;
+      const current = sections.find(([id]) => {
+        const rect = document.getElementById(id)?.getBoundingClientRect();
+        return rect && rect.top < marker && rect.bottom > marker;
+      });
+      sectionFocus.current = current?.[1] ?? null;
+      setActiveSection(current?.[0] ?? "");
+    };
+    track();
+    addEventListener("scroll", track, { passive: true });
+    addEventListener("resize", track);
+    return () => { removeEventListener("scroll", track); removeEventListener("resize", track); };
+  }, []);
+
   useFrame((state, delta) => {
     if (!root.current || !economicsRing.current || !builderRing.current || !enduranceRing.current || !core.current) return;
     const progress = THREE.MathUtils.clamp(progressRef.current, 0, 1);
+    readingFocus.current = sectionFocus.current ?? progress;
     const compact = THREE.MathUtils.smoothstep(progress, 0.87, 1);
     const chapterShift = THREE.MathUtils.smoothstep(progress, 0.1, 0.22);
     const ease = 1 - Math.pow(0.004, delta);
     const motion = reducedMotion.current ? 0 : 1;
     const time = state.clock.elapsedTime * motion;
     const isNarrow = size.width <= 720;
-    const isShortPhone = isNarrow && size.height < 740;
+    const isShortPhone = isNarrow && size.height <= 740;
     const landingX = isNarrow ? 0 : 1.03;
     const landingY = isNarrow ? (isShortPhone ? 0.8 : 1.15) : 0.08;
     const expandedX = THREE.MathUtils.lerp(landingX, -0.52, chapterShift);
     const expandedY = THREE.MathUtils.lerp(landingY, 0.08, chapterShift);
     const expandedScale = THREE.MathUtils.lerp(isNarrow ? (isShortPhone ? 0.35 : 0.46) : 0.82, 1, chapterShift);
 
-    root.current.position.x = THREE.MathUtils.lerp(root.current.position.x, THREE.MathUtils.lerp(expandedX, -1.75, compact), ease);
+    root.current.position.x = THREE.MathUtils.lerp(root.current.position.x, THREE.MathUtils.lerp(expandedX, -2.5, compact), ease);
     root.current.position.y = THREE.MathUtils.lerp(root.current.position.y, THREE.MathUtils.lerp(expandedY, 0.88, compact), ease);
-    const targetScale = THREE.MathUtils.lerp(expandedScale, 0.58, compact);
+    const targetScale = THREE.MathUtils.lerp(expandedScale, 0.48, compact);
     root.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), ease);
     root.current.rotation.y = THREE.MathUtils.lerp(root.current.rotation.y, pointer.current.x * 0.13, ease);
     root.current.rotation.x = THREE.MathUtils.lerp(root.current.rotation.x, pointer.current.y * 0.08, ease);
 
-    const economicsFocus = getChapterFocus(progress, 1);
-    const builderFocus = getChapterFocus(progress, 2);
-    const enduranceFocus = getChapterFocus(progress, 3);
+    const economicsFocus = getChapterFocus(readingFocus.current, 1);
+    const builderFocus = getChapterFocus(readingFocus.current, 2);
+    const enduranceFocus = getChapterFocus(readingFocus.current, 3);
     const economicsNatural = 0.22 + Math.sin(time * 0.32) * 0.18 + progress * 0.28;
     const builderNatural = -0.65 - Math.sin(time * 0.27 + 0.8) * 0.16 - progress * 0.22;
     const enduranceNatural = 0.98 + Math.sin(time * 0.36 + 1.4) * 0.2 + progress * 0.26;
@@ -277,20 +298,20 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
       <AmbientField />
 
       <group ref={economicsRing} rotation={[0.54, 0.24, 0.22]} scale={[1.2, 0.78, 1]}>
-        <OrbitBand accent={graphite} chapter={1} progressRef={progressRef} radius={1.62}>
-          <OrbitNode accent={graphite} angle={0.28} chapter={1} focusAngle={0.2} metric="8.20" label={language === "zh" ? "阿姆斯特丹绩点" : "UVA GPA"} progressRef={progressRef} radius={1.62} />
+        <OrbitBand accent={graphite} chapter={1} progressRef={readingFocus} radius={1.62}>
+          <OrbitNode accent={graphite} angle={0.28} chapter={1} focusAngle={0.2} metric="8.20" label={language === "zh" ? "阿姆斯特丹绩点" : "UVA GPA"} progressRef={readingFocus} radius={1.62} />
         </OrbitBand>
       </group>
 
       <group ref={builderRing} rotation={[-0.52, 0.72, -0.65]} scale={[1.12, 0.8, 1]}>
-        <OrbitBand accent={silver} chapter={2} progressRef={progressRef} radius={1.48}>
-          <OrbitNode accent={silver} angle={4.22} chapter={2} focusAngle={1.99} metric="18" label={language === "zh" ? "构建者 · 探索过的国家" : "BUILDER · COUNTRIES EXPLORED"} progressRef={progressRef} radius={1.48} />
+        <OrbitBand accent={silver} chapter={2} progressRef={readingFocus} radius={1.48}>
+          <OrbitNode accent={silver} angle={4.22} chapter={2} focusAngle={1.99} metric={activeSection === "experience" ? "13K+" : "18"} label={activeSection === "experience" ? (language === "zh" ? "用户增长 · 课程报名" : "GROWTH · ENROLLMENTS") : (language === "zh" ? "构建者 · 探索过的国家" : "BUILDER · COUNTRIES EXPLORED")} progressRef={readingFocus} radius={1.48} />
         </OrbitBand>
       </group>
 
       <group ref={enduranceRing} rotation={[0.82, -0.48, 0.98]} scale={[1.18, 0.76, 1]}>
-        <OrbitBand accent={smoke} chapter={3} progressRef={progressRef} radius={1.36}>
-          <OrbitNode accent={white} angle={3.64} chapter={3} focusAngle={3.24} metric={language === "zh" ? "冠军" : "1ST"} label={copy.endurance} progressRef={progressRef} radius={1.36} />
+        <OrbitBand accent={smoke} chapter={3} progressRef={readingFocus} radius={1.36}>
+          <OrbitNode accent={white} angle={3.64} chapter={3} focusAngle={3.24} metric={language === "zh" ? "冠军" : "1ST"} label={copy.endurance} progressRef={readingFocus} radius={1.36} />
         </OrbitBand>
       </group>
 
@@ -301,6 +322,9 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
           <icosahedronGeometry args={[0.62, 3]} />
           <meshPhysicalMaterial
             color="#313131"
+            iridescence={0.42}
+            iridescenceIOR={1.3}
+            iridescenceThicknessRange={[180, 340]}
             emissive={graphite}
             emissiveIntensity={0.05}
             metalness={0.15}
@@ -371,9 +395,21 @@ function ScrollCamera({ progressRef }: { progressRef: MutableRefObject<number> }
 }
 
 export function InteractivePortrait({ language, progressRef }: PortraitProps) {
+  const [active, setActive] = useState(true);
+  useEffect(() => {
+    const sync = () => {
+      const finale = document.querySelector(".orbit-finale")?.getBoundingClientRect();
+      setActive(!document.hidden && (!finale || finale.top > innerHeight));
+    };
+    sync();
+    addEventListener("scroll", sync, { passive: true });
+    document.addEventListener("visibilitychange", sync);
+    return () => { removeEventListener("scroll", sync); document.removeEventListener("visibilitychange", sync); };
+  }, []);
   return (
     <div className="character-stage orbit-stage">
       <Canvas
+        frameloop={active ? "always" : "never"}
         camera={{ position: [0, 0.12, 7.9], fov: 34, near: 0.1, far: 30 }}
         dpr={[1, 1.65]}
         shadows="percentage"
