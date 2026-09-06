@@ -2,6 +2,24 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
+test("provides bilingual chapter links, motion-aware navigation and a local contact action", async () => {
+  const html = await (await render()).text();
+  const navigation = await readFile(new URL("../app/components/ChapterNavigation.tsx", import.meta.url), "utf8");
+  assert.match(html, /aria-label="Chapter navigation"/);
+  for (const id of ["path", "experience", "pace", "contact"]) {
+    assert.match(html, new RegExp(`href="#${id}"`));
+    assert.match(html, new RegExp(`<section[^>]*id="${id}"[^>]*tabindex="-1"`));
+  }
+  assert.match(html, /Contact me/);
+  assert.doesNotMatch(html, /View GitHub|By the sea · At dusk/);
+  assert.match(html, /Étretat · Normandy, France/);
+  assert.match(navigation, /prefers-reduced-motion: reduce/);
+  assert.match(navigation, /reduceMotion \? "instant" : "smooth"/);
+  assert.match(navigation, /target.focus\(\{ preventScroll: true \}\)/);
+  assert.match(navigation, /aria-current/);
+  assert.match(navigation, /zh: "教育"/);
+});
+
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
@@ -133,8 +151,8 @@ test("keeps the experience responsive and accessible", async () => {
   assert.match(portrait, /scale=\{1\.12\}/);
   assert.match(portrait, /opacity=\{0\.8\}/);
   assert.match(portrait, /transmission=\{0\.08\}/);
-  assert.match(portrait, /const landingX = isNarrow \? 0 : 0\.72/);
-  assert.match(portrait, /const landingY = isNarrow \? 0\.68 : 0\.08/);
+  assert.match(portrait, /const landingX = isNarrow \? 0 : 1\.03/);
+  assert.match(portrait, /const landingY = isNarrow \? \(isShortPhone \? 0\.8 : 1\.15\) : 0\.08/);
   assert.match(portrait, /MANNHEIM/);
   assert.match(portrait, /SHANGHAI/);
   assert.match(portrait, /ZURICH/);

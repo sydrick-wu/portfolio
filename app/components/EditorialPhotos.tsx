@@ -10,7 +10,7 @@ const photos = {
   climb: { height: 2160, en: "Sydrick climbing a vineyard road during the Heilbronn cycling race", zh: "海尔布隆自行车赛中，Sydrick 骑行爬上葡萄园坡道" },
   peloton: { height: 2161, en: "Sydrick cornering with a group of riders through a village", zh: "Sydrick 随骑行集团经过村庄弯道" },
   finish: { height: 2364, en: "Sydrick catching his breath on the bike at the finish", zh: "抵达终点后，Sydrick 伏在车把上喘息" },
-  coast: { height: 1920, en: "Sydrick beside the sea at dusk, with a rock arch on the horizon", zh: "暮色中的海边，Sydrick 身后是远处的海蚀拱门" },
+  coast: { height: 1920, en: "Sydrick by the sea at Étretat in Normandy, France, with the chalk cliffs and arch at dusk", zh: "法国诺曼底埃特勒塔海边的 Sydrick，暮色中可见象鼻山的白垩岩崖与海蚀拱门" },
 } as const;
 
 export function EditorialPhoto({ name, language, caption, className = "", sizes = "(max-width: 720px) 90vw, 45vw" }: {

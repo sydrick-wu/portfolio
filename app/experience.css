@@ -1,34 +1,34 @@
 .experience.section-pad {
   position: relative;
   z-index: 9;
-  background: #211c19;
+  background: #1d1d1d;
   color: var(--paper-bright);
 }
 .experience .experience-heading { max-width: 1050px; }
-.experience .eyebrow { color: #c4a87b; font-size: 0.875rem; }
-.experience .section-heading > p:last-child { color: #bcb3aa; font-size: 1.125rem; }
+.experience .eyebrow { color: #ababab; font-size: 0.875rem; }
+.experience .section-heading > p:last-child { color: #b4b4b4; font-size: 1.125rem; }
 .experience .experience-heading h2 { font-size: clamp(46px, 6.4vw, 96px); line-height: 1.02; }
-.experience-list { margin-top: clamp(48px, 6vw, 96px); border-top: 1px solid #6f6053; }
+.experience-list { margin-top: clamp(48px, 6vw, 96px); border-top: 1px solid #626262; }
 .experience-row {
   display: grid;
   grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2.2fr);
   gap: clamp(32px, 5vw, 80px);
   padding-block: clamp(40px, 5vw, 72px);
-  border-bottom: 1px solid rgba(248, 244, 235, 0.18);
+  border-bottom: 1px solid rgba(244, 244, 244, 0.18);
 }
-.experience-meta { font-size: 0.875rem; line-height: 1.6; color: #bcb3aa; }
-.experience-index { display: block; color: #c4a87b; font-variant-numeric: tabular-nums; font-size: 0.875rem; margin-bottom: 24px; }
+.experience-meta { font-size: 0.875rem; line-height: 1.6; color: #b4b4b4; }
+.experience-index { display: block; color: #ababab; font-variant-numeric: tabular-nums; font-size: 0.875rem; margin-bottom: 24px; }
 .experience-meta p { margin: 0 0 6px; color: var(--paper-bright); }
 .experience-body { min-width: 0; }
 .experience-company { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: baseline; }
 .experience-company h3 { margin: 0; font-size: clamp(28px, 3vw, 44px); font-weight: 550; line-height: 1.12; letter-spacing: -0.045em; }
-.experience-company > span { color: #bcb3aa; font-size: 0.875rem; line-height: 1.5; }
-.experience-role { margin: 14px 0 0; font-size: 1.125rem; line-height: 1.5; color: #d4b98e; }
+.experience-company > span { color: #b4b4b4; font-size: 0.875rem; line-height: 1.5; }
+.experience-role { margin: 14px 0 0; font-size: 1.125rem; line-height: 1.5; color: #bcbcbc; }
 .experience-points { display: grid; gap: 24px; margin: 32px 0 0; padding: 0 0 0 20px; list-style: disc; }
 .experience-points li { padding-left: 6px; }
-.experience-points li::marker { color: #b99269; font-size: 0.75rem; }
+.experience-points li::marker { color: #979797; font-size: 0.75rem; }
 .experience-points strong { display: block; font-size: 1rem; font-weight: 600; line-height: 1.5; }
-.experience-points p { margin: 6px 0 0; max-width: 68ch; color: #c4bdb5; font-size: clamp(16px, 1.35vw, 19px); line-height: 1.7; text-wrap: pretty; }
+.experience-points p { margin: 6px 0 0; max-width: 68ch; color: #bebebe; font-size: clamp(16px, 1.35vw, 19px); line-height: 1.7; text-wrap: pretty; }
 .recognition.section-pad {
   position: relative;
   z-index: 9;
@@ -36,13 +36,13 @@
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.85fr);
   align-items: center;
   gap: clamp(40px, 8vw, 120px);
-  background: #302622;
+  background: #282828;
   color: var(--paper-bright);
 }
 .recognition-copy { min-width: 0; }
 .recognition .section-heading h2 { font-size: clamp(42px, 5vw, 76px); line-height: 1.03; }
-.recognition .eyebrow { color: #c4a87b; font-size: 0.875rem; }
-.recognition-groups { display: grid; gap: 32px; margin-top: 44px; font-size: 1rem; line-height: 1.7; color: #cdc4b9; }
+.recognition .eyebrow { color: #ababab; font-size: 0.875rem; }
+.recognition-groups { display: grid; gap: 32px; margin-top: 44px; font-size: 1rem; line-height: 1.7; color: #c5c5c5; }
 .recognition .recognition-photo { width: 100%; }
 
 @media (max-width: 720px) {

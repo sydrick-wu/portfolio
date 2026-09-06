@@ -23,10 +23,10 @@ type OrbitNodeProps = {
   radius: number;
 };
 
-const burgundy = "#6e2938";
-const brass = "#b79a68";
-const smoke = "#27201d";
-const ivory = "#f4eee3";
+const graphite = "#393939";
+const silver = "#9d9d9d";
+const smoke = "#212121";
+const white = "#eeeeee";
 
 const nodeChapterRanges = {
   1: [0.14, 0.39],
@@ -79,7 +79,7 @@ function OrbitNode({ accent, angle, chapter, focusAngle, label, metric, progress
       </mesh>
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.13, 0.009, 8, 36]} />
-        <meshBasicMaterial ref={haloMaterial} color={ivory} transparent opacity={0.68} />
+        <meshBasicMaterial ref={haloMaterial} color={white} transparent opacity={0.68} />
       </mesh>
       <Html center position={[0, 0.22, 0]} wrapperClass="orbit-html-root" zIndexRange={[8, 0]}>
         <div ref={labelElement} className="orbit-label" style={{ "--orbit-accent": accent } as React.CSSProperties}>
@@ -128,7 +128,7 @@ function OrbitBand({
       </mesh>
       <mesh scale={1.012}>
         <torusGeometry args={[radius, 0.008, 8, 180]} />
-        <meshBasicMaterial ref={highlightMaterial} color={ivory} transparent opacity={0.48} />
+        <meshBasicMaterial ref={highlightMaterial} color={white} transparent opacity={0.48} />
       </mesh>
       {children}
     </group>
@@ -162,19 +162,19 @@ function GeographicOrbit({ language }: { language: Language }) {
     <group>
       <mesh>
         <tubeGeometry args={[route, 160, 0.011, 8, true]} />
-        <meshBasicMaterial color="#d2bd98" transparent opacity={0.64} depthWrite={false} />
+        <meshBasicMaterial color="#bfbfbf" transparent opacity={0.64} depthWrite={false} />
       </mesh>
       <mesh position={mannheim}>
         <sphereGeometry args={[0.03, 18, 18]} />
-        <meshBasicMaterial color={ivory} />
+        <meshBasicMaterial color={white} />
       </mesh>
       <mesh position={shanghai}>
         <sphereGeometry args={[0.03, 18, 18]} />
-        <meshBasicMaterial color={ivory} />
+        <meshBasicMaterial color={white} />
       </mesh>
       <mesh position={zurich}>
         <sphereGeometry args={[0.04, 20, 20]} />
-        <meshStandardMaterial color={brass} emissive={brass} emissiveIntensity={0.35} metalness={0.7} roughness={0.18} />
+        <meshStandardMaterial color={silver} emissive={silver} emissiveIntensity={0.35} metalness={0.7} roughness={0.18} />
       </mesh>
       <Html center position={[mannheim.x - 0.62, mannheim.y - 0.22, mannheim.z]} wrapperClass="orbit-html-root" zIndexRange={[7, 0]}>
         <span className="orbit-route-label">MANNHEIM · 49.48°N</span>
@@ -207,7 +207,7 @@ function AmbientField() {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial color={ivory} size={0.018} transparent opacity={0.3} sizeAttenuation />
+      <pointsMaterial color={white} size={0.018} transparent opacity={0.3} sizeAttenuation />
     </points>
   );
 }
@@ -241,14 +241,15 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
     const compact = THREE.MathUtils.smoothstep(progress, 0.87, 1);
     const chapterShift = THREE.MathUtils.smoothstep(progress, 0.1, 0.22);
     const ease = 1 - Math.pow(0.004, delta);
-    const motion = reducedMotion.current ? 0.08 : 1;
+    const motion = reducedMotion.current ? 0 : 1;
     const time = state.clock.elapsedTime * motion;
     const isNarrow = size.width <= 720;
-    const landingX = isNarrow ? 0 : 0.72;
-    const landingY = isNarrow ? 0.68 : 0.08;
+    const isShortPhone = isNarrow && size.height < 740;
+    const landingX = isNarrow ? 0 : 1.03;
+    const landingY = isNarrow ? (isShortPhone ? 0.8 : 1.15) : 0.08;
     const expandedX = THREE.MathUtils.lerp(landingX, -0.52, chapterShift);
     const expandedY = THREE.MathUtils.lerp(landingY, 0.08, chapterShift);
-    const expandedScale = THREE.MathUtils.lerp(isNarrow ? 0.88 : 1, 1, chapterShift);
+    const expandedScale = THREE.MathUtils.lerp(isNarrow ? (isShortPhone ? 0.35 : 0.46) : 0.82, 1, chapterShift);
 
     root.current.position.x = THREE.MathUtils.lerp(root.current.position.x, THREE.MathUtils.lerp(expandedX, -1.75, compact), ease);
     root.current.position.y = THREE.MathUtils.lerp(root.current.position.y, THREE.MathUtils.lerp(expandedY, 0.88, compact), ease);
@@ -276,20 +277,20 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
       <AmbientField />
 
       <group ref={economicsRing} rotation={[0.54, 0.24, 0.22]} scale={[1.2, 0.78, 1]}>
-        <OrbitBand accent={burgundy} chapter={1} progressRef={progressRef} radius={1.62}>
-          <OrbitNode accent={burgundy} angle={0.28} chapter={1} focusAngle={0.2} metric="8.20" label={language === "zh" ? "阿姆斯特丹绩点" : "UVA GPA"} progressRef={progressRef} radius={1.62} />
+        <OrbitBand accent={graphite} chapter={1} progressRef={progressRef} radius={1.62}>
+          <OrbitNode accent={graphite} angle={0.28} chapter={1} focusAngle={0.2} metric="8.20" label={language === "zh" ? "阿姆斯特丹绩点" : "UVA GPA"} progressRef={progressRef} radius={1.62} />
         </OrbitBand>
       </group>
 
       <group ref={builderRing} rotation={[-0.52, 0.72, -0.65]} scale={[1.12, 0.8, 1]}>
-        <OrbitBand accent={brass} chapter={2} progressRef={progressRef} radius={1.48}>
-          <OrbitNode accent={brass} angle={4.22} chapter={2} focusAngle={1.99} metric="18" label={language === "zh" ? "构建者 · 探索过的国家" : "BUILDER · COUNTRIES EXPLORED"} progressRef={progressRef} radius={1.48} />
+        <OrbitBand accent={silver} chapter={2} progressRef={progressRef} radius={1.48}>
+          <OrbitNode accent={silver} angle={4.22} chapter={2} focusAngle={1.99} metric="18" label={language === "zh" ? "构建者 · 探索过的国家" : "BUILDER · COUNTRIES EXPLORED"} progressRef={progressRef} radius={1.48} />
         </OrbitBand>
       </group>
 
       <group ref={enduranceRing} rotation={[0.82, -0.48, 0.98]} scale={[1.18, 0.76, 1]}>
         <OrbitBand accent={smoke} chapter={3} progressRef={progressRef} radius={1.36}>
-          <OrbitNode accent={ivory} angle={3.64} chapter={3} focusAngle={3.24} metric={language === "zh" ? "冠军" : "1ST"} label={copy.endurance} progressRef={progressRef} radius={1.36} />
+          <OrbitNode accent={white} angle={3.64} chapter={3} focusAngle={3.24} metric={language === "zh" ? "冠军" : "1ST"} label={copy.endurance} progressRef={progressRef} radius={1.36} />
         </OrbitBand>
       </group>
 
@@ -299,8 +300,8 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
         <mesh castShadow>
           <icosahedronGeometry args={[0.62, 3]} />
           <meshPhysicalMaterial
-            color="#4d2931"
-            emissive={burgundy}
+            color="#313131"
+            emissive={graphite}
             emissiveIntensity={0.05}
             metalness={0.15}
             roughness={0.22}
@@ -316,11 +317,11 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
         </mesh>
         <mesh scale={1.035}>
           <icosahedronGeometry args={[0.62, 2]} />
-          <meshBasicMaterial color={brass} wireframe transparent opacity={0.32} depthWrite={false} />
+          <meshBasicMaterial color={silver} wireframe transparent opacity={0.32} depthWrite={false} />
         </mesh>
         <mesh rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[0.78, 0.012, 8, 90]} />
-          <meshBasicMaterial color={ivory} transparent opacity={0.38} />
+          <meshBasicMaterial color={white} transparent opacity={0.38} />
         </mesh>
         <Html center position={[0, 0, 0.67]} wrapperClass="orbit-html-root" zIndexRange={[9, 0]}>
           <div className="orbit-core-label">
@@ -375,14 +376,14 @@ export function InteractivePortrait({ language, progressRef }: PortraitProps) {
       <Canvas
         camera={{ position: [0, 0.12, 7.9], fov: 34, near: 0.1, far: 30 }}
         dpr={[1, 1.65]}
-        shadows
+        shadows="percentage"
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}
       >
-        <ambientLight intensity={1.2} color="#f5e9da" />
-        <hemisphereLight intensity={1.05} color="#f7e7d4" groundColor="#251b18" />
-        <directionalLight position={[4, 6, 5]} intensity={3.5} color="#f1cda8" castShadow shadow-mapSize={[1024, 1024]} />
-        <directionalLight position={[-4, 1, 3]} intensity={2.2} color="#7d3347" />
-        <pointLight position={[0, -1, 4]} intensity={1.35} color="#b79a68" />
+        <ambientLight intensity={1.2} color="#eaeaea" />
+        <hemisphereLight intensity={1.05} color="#e9e9e9" groundColor="#1d1d1d" />
+        <directionalLight position={[4, 6, 5]} intensity={3.5} color="#d2d2d2" castShadow shadow-mapSize={[1024, 1024]} />
+        <directionalLight position={[-4, 1, 3]} intensity={2.2} color="#444444" />
+        <pointLight position={[0, -1, 4]} intensity={1.35} color="#9d9d9d" />
         <PersonalOrbit language={language} progressRef={progressRef} />
         <ScrollCamera progressRef={progressRef} />
       </Canvas>

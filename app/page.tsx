@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { InteractivePortrait } from "./components/InteractivePortrait";
 import { EditorialPhoto, PortraitEditorial, RaceEditorial } from "./components/EditorialPhotos";
 import { WorkExperience } from "./components/WorkExperience";
+import { ChapterNavigation, jumpToSection } from "./components/ChapterNavigation";
 
 type Language = "en" | "zh";
 
@@ -21,7 +22,7 @@ const content = {
     headlineB: "",
     intro: "MSc Economics at Universität Mannheim, currently at the University of Zurich for exchange. Previously worked across venture capital, user growth and data analytics for Unilever; train and race in triathlon, running and cycling events.",
     enter: "Explore the orbit",
-    github: "View GitHub",
+    heroContact: "Contact me",
     stats: [
       ["8.20/10", "University of Amsterdam GPA"],
       ["18", "countries explored"],
@@ -142,7 +143,7 @@ const content = {
     headlineB: "",
     intro: "曼海姆大学经济学硕士生，目前在苏黎世大学交换学习。曾从事风险投资、用户增长，并为联合利华开展数据分析工作；持续参加铁人三项、跑步和自行车赛事训练与竞赛。",
     enter: "沿轨道向下探索",
-    github: "查看 GitHub",
+    heroContact: "联系我",
     stats: [
       ["8.20/10", "阿姆斯特丹大学交换绩点"],
       ["18", "探索过的国家"],
@@ -360,9 +361,7 @@ export default function Home() {
         <span className="sen-mark sen-mark-tr" aria-hidden="true">+</span>
         <span className="sen-mark sen-mark-bl" aria-hidden="true">+</span>
         <span className="sen-mark sen-mark-br" aria-hidden="true">+</span>
-        <a className="brand" href="#top" aria-label={language === "zh" ? "Sydrick Wu — 返回顶部" : "Sydrick Wu — back to top"}>
-          <span className="brand-copy"><strong>Sydrick Wu</strong><small>{t.descriptor}</small></span>
-        </a>
+        <ChapterNavigation language={language} />
         <div className="sen-meta sen-meta-top">{t.portfolio}</div>
         <div className="sen-meta sen-meta-bottom">{t.descriptor}</div>
         <div className="sen-meta sen-meta-side">{t.location}</div>
@@ -377,11 +376,12 @@ export default function Home() {
 
       <main>
         <section className="portrait-story" id="profile" ref={storyRef} data-stage={storyStage}>
-          <span className="top-anchor" id="top" />
+          <span className="top-anchor" id="top" tabIndex={-1} />
           <span className="story-anchor story-anchor-one" id="portrait-chapter-1" />
           <div className="story-sticky">
             <div className="story-copy-stack">
-              <article className={`story-copy story-intro ${storyStage === 0 ? "active" : ""}`} aria-hidden={storyStage !== 0}>
+              <article className={`story-copy story-intro ${storyStage === 0 ? "active" : ""}`} aria-hidden={storyStage !== 0} inert={storyStage !== 0}>
+                <div className="hero-reading">
                 <div className="hero-title-system">
                   <span>{language === "zh" ? "个人系统 / 001" : "PERSONAL SYSTEM / 001"}</span>
                   <h1 aria-label={t.headlineA}>
@@ -391,7 +391,8 @@ export default function Home() {
                 <p className="hero-intro">{t.intro}</p>
                 <div className="hero-actions">
                   <a className="button primary" href="#portrait-chapter-1">{t.enter}<span aria-hidden="true">↓</span></a>
-                  <a className="text-link" href="https://github.com/sydrick-wu" target="_blank" rel="noreferrer">{t.github}<span aria-hidden="true">↗</span></a>
+                  <a className="text-link" href="#contact" onClick={jumpToSection}>{t.heroContact}<span aria-hidden="true">↘</span></a>
+                </div>
                 </div>
               </article>
 
@@ -411,7 +412,7 @@ export default function Home() {
 
         <PortraitEditorial language={language} />
 
-        <section className="path section-pad" id="path">
+        <section className="path section-pad" id="path" tabIndex={-1}>
           <div className="section-heading path-heading">
             <p className="eyebrow">{t.pathLabel}</p><h2>{t.pathTitle}</h2><p>{t.pathIntro}</p>
           </div>
@@ -463,7 +464,7 @@ export default function Home() {
           <EditorialPhoto name="heritage" language={language} className="recognition-photo" caption={language === "en" ? "A portrait in traditional dress" : "传统服饰肖像"} sizes="(max-width: 720px) 75vw, 30vw" />
         </section>
 
-        <section className="pace section-pad" id="pace">
+        <section className="pace section-pad" id="pace" tabIndex={-1}>
           <div className="pace-rings" aria-hidden="true">{t.paceModes.map((mode) => <span key={mode}>{mode}</span>)}</div>
           <div className="section-heading pace-heading">
             <p className="eyebrow">{t.paceLabel}</p><h2>{t.paceTitle}</h2><p>{t.paceIntro}</p>
@@ -482,12 +483,12 @@ export default function Home() {
           <div className="pace-quote"><p>{t.quote}</p><span>{t.principle}</span></div>
         </section>
 
-        <section className="contact section-pad" id="contact">
+        <section className="contact section-pad" id="contact" tabIndex={-1}>
           <div className="contact-editorial-layout">
           <div className="contact-editorial-copy">
           <p className="eyebrow">{t.contactLabel}</p><h2>{t.contactTitle}</h2><p className="contact-copy">{t.contactIntro}</p>
           </div>
-          <EditorialPhoto name="coast" language={language} className="contact-photo" caption={language === "en" ? "By the sea · At dusk" : "海边 · 日暮时分"} sizes="(max-width: 720px) 62vw, 25vw" />
+          <EditorialPhoto name="coast" language={language} className="contact-photo" caption={language === "en" ? "Étretat · Normandy, France" : "埃特勒塔 · 法国诺曼底象鼻山"} sizes="(max-width: 720px) 62vw, 25vw" />
           </div>
           <a className="contact-email" href="mailto:sydrick.wu@gmail.com">sydrick.wu@gmail.com <span aria-hidden="true">↗</span></a>
           <div className="social-row">

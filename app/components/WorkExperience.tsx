@@ -95,7 +95,7 @@ const experience = {
 export function WorkExperience({ language }: { language: Language }) {
   const t = experience[language];
   return (
-    <section className="experience section-pad" id="experience" aria-labelledby="experience-title">
+    <section className="experience section-pad" id="experience" aria-labelledby="experience-title" tabIndex={-1}>
       <div className="section-heading experience-heading">
         <p className="eyebrow">{t.label}</p><h2 id="experience-title">{t.title}</h2><p>{t.intro}</p>
       </div>
