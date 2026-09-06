@@ -55,8 +55,8 @@ export function RaceEditorial({ language }: { language: Language }) {
     <div className="race-editorial" role="group" aria-label={en ? "Heilbronn race photographs" : "海尔布隆比赛影像"}>
       <div className="race-editorial-header"><span>{en ? "Heilbronn / 23.08.2026" : "海尔布隆 / 2026.08.23"}</span><span>{en ? "Race day" : "比赛日"}</span></div>
       <div className="race-editorial-grid">
-        <EditorialPhoto name="climb" language={language} caption={en ? "01 / The climb" : "01 / 爬坡"} className="race-photo-lead" sizes="(max-width: 720px) 90vw, 40vw" />
-        <EditorialPhoto name="peloton" language={language} caption={en ? "02 / In the bunch" : "02 / 集团中"} sizes="(max-width: 720px) 42vw, 22vw" />
+        <EditorialPhoto name="peloton" language={language} caption={en ? "01 / In the bunch" : "01 / 集团中"} className="race-photo-lead" sizes="(max-width: 720px) 90vw, 40vw" />
+        <EditorialPhoto name="climb" language={language} caption={en ? "02 / The climb" : "02 / 爬坡"} sizes="(max-width: 720px) 42vw, 22vw" />
         <EditorialPhoto name="finish" language={language} caption={en ? "03 / Across the line" : "03 / 终点之后"} sizes="(max-width: 720px) 42vw, 22vw" />
       </div>
     </div>

@@ -48,12 +48,13 @@ test("server-renders Sydrick's finished portfolio", async () => {
 });
 
 test("keeps the experience responsive and accessible", async () => {
-  const [page, portrait, layout, css, packageJson] = await Promise.all([
+  const [page, portrait, layout, css, packageJson, work] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components/InteractivePortrait.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/WorkExperience.tsx", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /sen-chrome/);
@@ -79,8 +80,8 @@ test("keeps the experience responsive and accessible", async () => {
   assert.match(page, /曾在 Y Combinator 中国从事风险投资、创始人关系、投资研究与用户增长/);
   assert.doesNotMatch(page, /At MiraclePlus, I worked across venture capital/);
   assert.doesNotMatch(page, /Experience in founder relations, investment research and growth at MiraclePlus/);
-  assert.match(page, /Built three Power BI dashboards using Nielsen and planning datasets/);
-  assert.match(page, /使用 Nielsen 与媒介规划数据搭建 3 个 Power BI 仪表板/);
+  assert.match(work, /Built three Power BI dashboards using Nielsen and planning datasets/);
+  assert.match(work, /使用 Nielsen 与媒介规划数据搭建 3 个 Power BI 仪表板/);
   assert.doesNotMatch(page, /Commercial data analysis and insights at the intersection/);
   assert.match(page, /Recent highlights include an age-group win at the Zhejiang Triathlon Race/);
   assert.match(page, /1:19:50 Frankfurt half marathon/);
@@ -102,10 +103,10 @@ test("keeps the experience responsive and accessible", async () => {
   assert.match(page, /Final average: 71\/100 · First Class Honours · Top 10%/);
   assert.match(page, /Nottingham Advantage Award/);
   assert.match(page, /Research Assistant to the Dean of the Graduate School across five industry projects/);
-  assert.match(page, /Top 5% in deal sourcing/);
-  assert.match(page, /Startup School to 13,000\+ enrollments/);
-  assert.match(page, /Robotic Process Automation \(RPA\)/);
-  assert.match(page, /Feilan Advertising/);
+  assert.match(work, /Top 5% in deal sourcing/);
+  assert.match(work, /13,000\+ enrollments/);
+  assert.match(work, /Robotic Process Automation \(RPA\)/);
+  assert.match(work, /Feilan Advertising/);
   assert.match(portrait, /PersonalOrbit/);
   assert.match(portrait, /OrbitBand/);
   assert.match(portrait, /OrbitNode/);
@@ -176,4 +177,34 @@ test("renders the curated photographs with responsive local assets and English c
   assert.match(html, /University of Nottingham · Graduation/);
   assert.match(html, /03 \/ Across the line/);
   assert.doesNotMatch(html, /个人影像|毕业典礼|终点之后|日暮时分/);
+});
+
+test("separates education, work and recognition without losing academic results", async () => {
+  const html = await (await render()).text();
+  const section = (id) => {
+    const match = html.match(new RegExp(`<section[^>]*id="${id}"[^>]*>([\\s\\S]*?)</section>`));
+    assert.ok(match, `Missing section ${id}`);
+    return match[1];
+  };
+  const education = section("path");
+  const work = section("experience");
+  const recognition = section("recognition");
+  assert.equal((education.match(/class="timeline-row timeline-row-expanded"/g) ?? []).length, 4);
+  assert.equal((education.match(/<li><span>/g) ?? []).length, 22);
+  assert.doesNotMatch(education, /Y Combinator|GroupM|Feilan|Energy Hackathon/);
+  assert.match(education, /graduation-1440.webp/);
+  assert.match(education, /Nottingham Advantage Award/);
+  assert.equal((work.match(/class="experience-row"/g) ?? []).length, 4);
+  assert.equal((work.match(/<li>/g) ?? []).length, 12);
+  assert.match(work, /Apr — Oct 2024/);
+  assert.match(work, /Sep 2023 — Jan 2024/);
+  assert.match(work, /7,000\+ followers/);
+  assert.doesNotMatch(work, /Final average|course-results/);
+  assert.match(recognition, /Energy Hackathon/);
+  assert.match(recognition, /heritage-1440.webp/);
+  const lead = html.match(/<figure class="editorial-photo race-photo-lead">([\s\S]*?)<\/figure>/)?.[1];
+  assert.ok(lead);
+  assert.match(lead, /peloton-1440.webp/);
+  assert.match(lead, /01 \/ In the bunch/);
+  assert.match(html, /02 \/ The climb/);
 });
