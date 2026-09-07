@@ -167,8 +167,9 @@ test("keeps the experience responsive and accessible", async () => {
   assert.match(portrait, /function GeographicOrbit/);
   assert.match(portrait, /new THREE\.CatmullRomCurve3\([\s\S]*?\n\s*true,\n\s*"centripetal"/);
   assert.match(portrait, /tubeGeometry args=\{\[route, 160, 0\.003, 8, true\]\}/);
-  assert.match(portrait, /ringGeometry args=\{\[radius - 0\.003, radius \+ 0\.003, 192\]\}/);
+  assert.match(portrait, /ringGeometry args=\{\[radius - 0\.005, radius \+ 0\.005, 192\]\}/);
   assert.doesNotMatch(portrait, /#719b9e|iridescence/);
+  for (const accent of ["#a77ac4", "#d8b469", "#a5ad65"]) assert.ok(portrait.includes(accent));
   assert.match(portrait, /route\.getPoint\(0\.01\)/);
   assert.match(portrait, /route\.getPoint\(0\.36\)/);
   assert.match(portrait, /route\.getPoint\(0\.5\)/);

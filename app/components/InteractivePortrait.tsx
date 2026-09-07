@@ -23,9 +23,10 @@ type OrbitNodeProps = {
   radius: number;
 };
 
-const graphite = "#535353";
-const silver = "#bdbdbd";
-const smoke = "#858585";
+// Mineral accents with enough chroma to remain visible on the neutral stage.
+const graphite = "#a77ac4";
+const silver = "#d8b469";
+const smoke = "#a5ad65";
 const white = "#eeeeee";
 
 const nodeChapterRanges = {
@@ -116,15 +117,15 @@ function OrbitBand({
     const ease = 1 - Math.pow(0.002, delta);
     const targetScale = THREE.MathUtils.lerp(1, THREE.MathUtils.lerp(0.985, 1.025, focus), chapterMode);
     group.current.scale.setScalar(THREE.MathUtils.lerp(group.current.scale.x, targetScale, ease));
-    bandMaterial.current.opacity = THREE.MathUtils.lerp(0.7, THREE.MathUtils.lerp(0.3, 0.9, focus), chapterMode);
+    bandMaterial.current.opacity = THREE.MathUtils.lerp(0.9, THREE.MathUtils.lerp(0.4, 1, focus), chapterMode);
     highlightMaterial.current.opacity = THREE.MathUtils.lerp(0.48, THREE.MathUtils.lerp(0.18, 0.78, focus), chapterMode);
   });
 
   return (
     <group ref={group}>
       <mesh>
-        <ringGeometry args={[radius - 0.003, radius + 0.003, 192]} />
-        <meshBasicMaterial ref={bandMaterial} color={accent} side={THREE.DoubleSide} transparent opacity={0.7} depthWrite={false} />
+        <ringGeometry args={[radius - 0.005, radius + 0.005, 192]} />
+        <meshBasicMaterial ref={bandMaterial} color={accent} side={THREE.DoubleSide} transparent opacity={0.9} depthWrite={false} />
       </mesh>
       <mesh scale={1.012}>
         <ringGeometry args={[radius - 0.0015, radius + 0.0015, 192]} />
@@ -176,7 +177,7 @@ function GeographicOrbit({ language }: { language: Language }) {
         <sphereGeometry args={[0.04, 20, 20]} />
         <meshStandardMaterial color={silver} emissive={silver} emissiveIntensity={0.35} metalness={0.7} roughness={0.18} />
       </mesh>
-      <Html center position={[mannheim.x - 0.62, mannheim.y - 0.22, mannheim.z]} wrapperClass="orbit-html-root" zIndexRange={[7, 0]}>
+      <Html center position={[mannheim.x - 0.35, mannheim.y - 0.22, mannheim.z]} wrapperClass="orbit-html-root" zIndexRange={[7, 0]}>
         <span className="orbit-route-label">MANNHEIM · 49.48°N</span>
       </Html>
       <Html center position={[shanghai.x + 0.62, shanghai.y - 0.2, shanghai.z]} wrapperClass="orbit-html-root" zIndexRange={[7, 0]}>
@@ -321,9 +322,9 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
         <mesh castShadow>
           <icosahedronGeometry args={[0.62, 3]} />
           <meshPhysicalMaterial
-            color="#313131"
+            color="#654477"
             emissive={graphite}
-            emissiveIntensity={0.05}
+            emissiveIntensity={0.07}
             metalness={0.15}
             roughness={0.58}
             transparent
