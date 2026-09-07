@@ -1572,3 +1572,8 @@ section[tabindex="-1"]:focus, .top-anchor:focus { outline: none; }
 
 /* The opening is deliberately unmasked at every viewport size. */
 .portrait-story[data-stage="0"] .story-sticky::after { background: none; opacity: 0; }
+@media (max-width: 380px) {
+  .orbit-core-label { display: none; }
+  .orbit-label { min-width: 56px; padding: 8px 12px; }
+  .orbit-label span { display: none; }
+}

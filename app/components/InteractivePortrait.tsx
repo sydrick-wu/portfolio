@@ -267,7 +267,7 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
     const isNarrow = size.width <= 720;
     const isShortPhone = isNarrow && size.height <= 740;
     const landingX = isNarrow ? 0 : 1.03;
-    const landingY = isNarrow ? (isShortPhone ? 0.8 : 1.15) : 0.08;
+    const landingY = isNarrow ? (isShortPhone ? 1.2 : 1.15) : 0.08;
     const expandedX = THREE.MathUtils.lerp(landingX, -0.52, chapterShift);
     const expandedY = THREE.MathUtils.lerp(landingY, 0.08, chapterShift);
     const expandedScale = THREE.MathUtils.lerp(isNarrow ? (isShortPhone ? 0.35 : 0.46) : 0.82, 1, chapterShift);

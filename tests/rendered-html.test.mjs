@@ -178,7 +178,7 @@ test("keeps the experience responsive and accessible", async () => {
   assert.match(portrait, /opacity=\{0\.8\}/);
   assert.match(portrait, /transmission=\{0\.08\}/);
   assert.match(portrait, /const landingX = isNarrow \? 0 : 1\.03/);
-  assert.match(portrait, /const landingY = isNarrow \? \(isShortPhone \? 0\.8 : 1\.15\) : 0\.08/);
+  assert.match(portrait, /const landingY = isNarrow \? \(isShortPhone \? 1\.2 : 1\.15\) : 0\.08/);
   assert.match(portrait, /MANNHEIM/);
   assert.match(portrait, /SHANGHAI/);
   assert.match(portrait, /ZURICH/);
