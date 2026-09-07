@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { InteractivePortrait } from "./components/InteractivePortrait";
-import { EditorialPhoto, PortraitEditorial, RaceEditorial } from "./components/EditorialPhotos";
+import { EditorialPhoto, PortraitEditorial, RaceEditorial, RunEditorial } from "./components/EditorialPhotos";
 import { WorkExperience } from "./components/WorkExperience";
 import { ChapterNavigation, jumpToSection } from "./components/ChapterNavigation";
 import { OrbitFinale } from "./components/OrbitFinale";
@@ -471,6 +471,7 @@ export default function Home() {
             <p className="eyebrow">{t.paceLabel}</p><h2>{t.paceTitle}</h2><p>{t.paceIntro}</p>
           </div>
           <RaceEditorial language={language} />
+          <RunEditorial language={language} />
           <div className="sporting-recognition">
             <h3>{t.sportingRecognition}</h3>
             <ul>{t.sportingHonours.map((honour) => <li key={honour}>{honour}</li>)}</ul>

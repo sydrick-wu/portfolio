@@ -1,4 +1,16 @@
 /* Photography follows the existing chapter rhythm; nothing overlays the orbit. */
+.run-editorial { position: relative; z-index: 2; margin-block: clamp(96px, 12vw, 180px) 72px; }
+.run-editorial-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(36px, 8vw, 128px); align-items: start; }
+.run-editorial-aside { padding-top: clamp(24px, 5vw, 80px); }
+.run-editorial-result { display: grid; gap: 16px; margin: 0 0 clamp(40px, 5vw, 80px); }
+.run-editorial-result strong { font-size: clamp(48px, 6.4vw, 96px); font-weight: 400; line-height: 1; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
+.run-editorial-result span { font-size: 14px; line-height: 1.6; color: #bdbdbd; }
+.run-editorial-result span:first-child { text-transform: uppercase; letter-spacing: .14em; font-size: 12px; }
+@media (max-width: 720px) {
+  .run-editorial-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .run-editorial-aside { padding-top: 0; width: 76%; margin-left: auto; }
+  .run-editorial-result { margin-bottom: 32px; }
+}
 .editorial-photo { margin: 0; min-width: 0; }
 .editorial-photo picture { display: block; overflow: hidden; background: #282828; }
 .editorial-photo img { display: block; width: 100%; height: auto; }

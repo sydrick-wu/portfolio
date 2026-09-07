@@ -23,9 +23,9 @@ type OrbitNodeProps = {
   radius: number;
 };
 
-const graphite = "#719b9e";
-const silver = "#b9bed0";
-const smoke = "#62697b";
+const graphite = "#535353";
+const silver = "#bdbdbd";
+const smoke = "#858585";
 const white = "#eeeeee";
 
 const nodeChapterRanges = {
@@ -105,7 +105,7 @@ function OrbitBand({
   radius: number;
 }) {
   const group = useRef<THREE.Group>(null);
-  const bandMaterial = useRef<THREE.MeshPhysicalMaterial>(null);
+  const bandMaterial = useRef<THREE.MeshBasicMaterial>(null);
   const highlightMaterial = useRef<THREE.MeshBasicMaterial>(null);
 
   useFrame((_, delta) => {
@@ -116,19 +116,19 @@ function OrbitBand({
     const ease = 1 - Math.pow(0.002, delta);
     const targetScale = THREE.MathUtils.lerp(1, THREE.MathUtils.lerp(0.985, 1.025, focus), chapterMode);
     group.current.scale.setScalar(THREE.MathUtils.lerp(group.current.scale.x, targetScale, ease));
-    bandMaterial.current.emissiveIntensity = THREE.MathUtils.lerp(0.08, THREE.MathUtils.lerp(0.025, 0.34, focus), chapterMode);
+    bandMaterial.current.opacity = THREE.MathUtils.lerp(0.7, THREE.MathUtils.lerp(0.3, 0.9, focus), chapterMode);
     highlightMaterial.current.opacity = THREE.MathUtils.lerp(0.48, THREE.MathUtils.lerp(0.18, 0.78, focus), chapterMode);
   });
 
   return (
     <group ref={group}>
-      <mesh castShadow>
-        <torusGeometry args={[radius, 0.034, 14, 180]} />
-        <meshPhysicalMaterial ref={bandMaterial} color={accent} emissive={accent} emissiveIntensity={0.08} metalness={0.86} roughness={0.2} clearcoat={1} iridescence={0.38} iridescenceIOR={1.3} iridescenceThicknessRange={[180, 360]} />
+      <mesh>
+        <ringGeometry args={[radius - 0.003, radius + 0.003, 192]} />
+        <meshBasicMaterial ref={bandMaterial} color={accent} side={THREE.DoubleSide} transparent opacity={0.7} depthWrite={false} />
       </mesh>
       <mesh scale={1.012}>
-        <torusGeometry args={[radius, 0.008, 8, 180]} />
-        <meshBasicMaterial ref={highlightMaterial} color={white} transparent opacity={0.48} />
+        <ringGeometry args={[radius - 0.0015, radius + 0.0015, 192]} />
+        <meshBasicMaterial ref={highlightMaterial} color={white} side={THREE.DoubleSide} transparent opacity={0.48} depthWrite={false} />
       </mesh>
       {children}
     </group>
@@ -161,7 +161,7 @@ function GeographicOrbit({ language }: { language: Language }) {
   return (
     <group>
       <mesh>
-        <tubeGeometry args={[route, 160, 0.011, 8, true]} />
+        <tubeGeometry args={[route, 160, 0.003, 8, true]} />
         <meshBasicMaterial color="#bfbfbf" transparent opacity={0.64} depthWrite={false} />
       </mesh>
       <mesh position={mannheim}>
@@ -322,13 +322,10 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
           <icosahedronGeometry args={[0.62, 3]} />
           <meshPhysicalMaterial
             color="#313131"
-            iridescence={0.42}
-            iridescenceIOR={1.3}
-            iridescenceThicknessRange={[180, 340]}
             emissive={graphite}
             emissiveIntensity={0.05}
             metalness={0.15}
-            roughness={0.22}
+            roughness={0.58}
             transparent
             opacity={0.8}
             transmission={0.08}
@@ -344,7 +341,7 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
           <meshBasicMaterial color={silver} wireframe transparent opacity={0.32} depthWrite={false} />
         </mesh>
         <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.78, 0.012, 8, 90]} />
+          <torusGeometry args={[0.78, 0.003, 8, 90]} />
           <meshBasicMaterial color={white} transparent opacity={0.38} />
         </mesh>
         <Html center position={[0, 0, 0.67]} wrapperClass="orbit-html-root" zIndexRange={[9, 0]}>

@@ -2,10 +2,14 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
-test("integrates the lazy black-hole host with motion controls and target-language labels", async () => {
+test("uses a static black-hole finale and preserves target-language labels and chapter focus", async () => {
   const html = await (await render()).text();
   assert.match(html, /Where paths meet\./);
-  assert.match(html, /Pause motion/);
+  assert.doesNotMatch(html, /Pause motion|Resume motion/);
+  assert.match(html, /black-hole-static-1920.webp/);
+  const finale = await readFile(new URL("../app/components/OrbitFinale.tsx", import.meta.url), "utf8");
+  assert.doesNotMatch(finale, /optimized-black-hole|<canvas/);
+  await access(new URL("../public/photos/black-hole-static-1920.webp", import.meta.url));
   assert.match(html, /切换中文/);
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   assert.match(page, /assistantAction: "Switch to English"/);
@@ -162,7 +166,9 @@ test("keeps the experience responsive and accessible", async () => {
   assert.match(portrait, /CatmullRomCurve3/);
   assert.match(portrait, /function GeographicOrbit/);
   assert.match(portrait, /new THREE\.CatmullRomCurve3\([\s\S]*?\n\s*true,\n\s*"centripetal"/);
-  assert.match(portrait, /tubeGeometry args=\{\[route, 160, 0\.011, 8, true\]\}/);
+  assert.match(portrait, /tubeGeometry args=\{\[route, 160, 0\.003, 8, true\]\}/);
+  assert.match(portrait, /ringGeometry args=\{\[radius - 0\.003, radius \+ 0\.003, 192\]\}/);
+  assert.doesNotMatch(portrait, /#719b9e|iridescence/);
   assert.match(portrait, /route\.getPoint\(0\.01\)/);
   assert.match(portrait, /route\.getPoint\(0\.36\)/);
   assert.match(portrait, /route\.getPoint\(0\.5\)/);
@@ -198,9 +204,9 @@ test("keeps the experience responsive and accessible", async () => {
 
 test("renders the curated photographs with responsive local assets and English captions", async () => {
   const html = await (await render()).text();
-  const names = ["portrait", "monochrome", "graduation", "heritage", "climb", "peloton", "finish", "coast"];
+  const names = ["portrait-new", "monochrome", "graduation", "heritage", "climb", "peloton", "finish", "coast", "frankfurt-finish", "frankfurt-notes"];
   const images = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => tag);
-  assert.equal(images.length, names.length);
+  assert.equal(images.length, names.length + 1); // Decorative static finale.
   for (const name of names) {
     const tag = images.find((image) => image.includes(`./photos/${name}-1440.webp`));
     assert.ok(tag, `Missing photograph: ${name}`);
@@ -212,6 +218,9 @@ test("renders the curated photographs with responsive local assets and English c
     await Promise.all([640, 1440].map((width) => access(new URL(`../public/photos/${name}-${width}.webp`, import.meta.url))));
   }
   assert.match(html, /Amsterdam · Along the canals/);
+  assert.match(html, /Frankfurt \/ 22.03.2026/);
+  assert.match(html, /The final metres/);
+  assert.match(html, /Original activity record/);
   assert.match(html, /University of Nottingham · Graduation/);
   assert.match(html, /03 \/ Across the line/);
   assert.doesNotMatch(html, /个人影像|毕业典礼|终点之后|日暮时分/);

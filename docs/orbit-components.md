@@ -15,4 +15,14 @@ The supplied snippet included a canvas host but not `optimized-black-hole-utils/
 
 `Example` accepts optional `paused: boolean`; it requires no context provider, textures, stock imagery or icon library. The host loads the renderer near the viewport. The renderer caps pixel ratio at 1.35 and animation at 30 frames per second, pauses offscreen/when the tab is hidden, respects reduced motion and disposes GPU resources on unmount. Without WebGL, a static gradient fallback remains and all navigation still works. Touch scrolling is not captured.
 
-`OrbitFinale` places it after the race chapter with a working contact link and a motion toggle. The main orbit's satellites react to the active education/work/race chapter; the small orbital navigation dial tracks progress within the current chapter. Photos retain their original colours.
+The animated demo is retained as standalone code only; it is no longer imported by the portfolio. `OrbitFinale` now uses a lazy-loaded static image with a working contact link, without an animation loop or motion controls. The main orbit uses thin double-sided flat rings in neutral grey, not reflective tubes. Its satellites still react to education/work/race chapters, and the small navigation dial tracks chapter progress. The opening white mask is disabled at every viewport size.
+
+## Static finale asset — 7 September 2026
+
+Mode: original text-to-image generation using the built-in image generator. Decorative artwork, not an observational image or scientific simulation. Web delivery: `public/photos/black-hole-static-960.webp` and `public/photos/black-hole-static-1920.webp`. No personal photographs were generated or retouched; those only received responsive resizing and WebP encoding.
+
+Final prompt:
+
+> Create a refined cinematic static website footer background, landscape 16:9. A scientifically inspired black hole with its enormous perfectly dark event horizon on the right half, luminous thin silver-white gravitational lensing ring and intricate wispy accretion disk bending across the lower-right frame, countless delicate filaments and layered turbulent dust details, subtle sparse pinprick stars, deep charcoal black. The left 40 percent is nearly black calm negative space for white website heading, with only a very faint dust haze. Pure monochrome, sophisticated photographic astronomical visualization, very high detail, restrained luminance, no blue or cyan, no metallic tubes, no colored neon, no text, no labels, no UI, no mouse cursor, no watermark. Edge to edge composition.
+
+The new Frankfurt pairing uses the clean photograph as the lead and preserves the original Strava overlay in the smaller activity-record photograph. The displayed personal best remains the certificate-backed 1:19:50; GPS-recorded distance/time in the overlay are not treated as official race results.
