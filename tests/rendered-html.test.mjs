@@ -73,6 +73,23 @@ async function render() {
   );
 }
 
+test("separates personal journeys from race results and preserves the travel account", async () => {
+  const html = await (await render()).text();
+  const journeys = html.match(/<div class="journeys"[\s\S]*?(?=<div class="pace-quote")/)?.[0];
+  assert.ok(journeys);
+  assert.match(journeys, /Beyond the finish line\./);
+  assert.match(journeys, /Camino de Santiago/);
+  assert.doesNotMatch(journeys, /100\s?km|completed|entire route|85\s?km|HC|Hors/);
+  assert.match(journeys, /eight-day solo bikepacking journey, with six days on the bike/);
+  for (const detail of ["680 km", "15,388 m", "Grand-Saint-Bernard", "Ruben", "Adapted from my travel journal"]) assert.ok(journeys.includes(detail));
+  const source = await readFile(new URL("../app/components/Journeys.tsx", import.meta.url), "utf8");
+  assert.match(source, /圣地亚哥朝圣之路/);
+  assert.match(source, /其中六天在车上度过/);
+  assert.match(source, /改写自我的旅途日记/);
+  const css = await readFile(new URL("../app/editorial.css", import.meta.url), "utf8");
+  assert.match(css, /\.journeys-grid \{ grid-template-columns: minmax\(0, 1fr\); gap: 44px; \}/);
+});
+
 test("server-renders Sydrick's finished portfolio", async () => {
   const response = await render();
   assert.equal(response.status, 200);

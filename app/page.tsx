@@ -6,6 +6,7 @@ import { EditorialPhoto, PortraitEditorial, RaceEditorial, RunEditorial } from "
 import { WorkExperience } from "./components/WorkExperience";
 import { ChapterNavigation, jumpToSection } from "./components/ChapterNavigation";
 import { OrbitFinale } from "./components/OrbitFinale";
+import { Journeys } from "./components/Journeys";
 
 type Language = "en" | "zh";
 
@@ -489,6 +490,7 @@ export default function Home() {
               <article className="race-row" key={`${event}-${detail}`}><strong>{result}</strong><h3>{event}</h3><p>{detail}</p><span aria-hidden="true">↗</span></article>
             ))}
           </div>
+          <Journeys language={language} />
           <div className="pace-quote"><p>{t.quote}</p><span>{t.principle}</span></div>
         </section>
 
