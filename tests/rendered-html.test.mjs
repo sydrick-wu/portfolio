@@ -35,6 +35,14 @@ test("provides bilingual chapter links, motion-aware navigation and a local cont
     assert.match(html, new RegExp(`<section[^>]*id="${id}"[^>]*tabindex="-1"`));
   }
   assert.match(html, /Contact me/);
+  assert.match(html, /Heyyyy there, I’m Sydrick!/);
+  assert.match(html, /venture capital and user growth at YC China \(Y Combinator China\)/);
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.match(css, /backdrop-filter: blur\(16px\) saturate\(145%\)/);
+  assert.match(css, /border-radius: 999px/);
+  assert.match(navigation, /data-tone=\{tone\}/);
+  assert.match(navigation, /observer.disconnect\(\)/);
+  assert.match(css, /prefers-reduced-transparency: reduce/);
   assert.doesNotMatch(html, /View GitHub|By the sea · At dusk/);
   assert.match(html, /Étretat · Normandy, France/);
   assert.match(navigation, /prefers-reduced-motion: reduce/);
@@ -81,7 +89,9 @@ test("server-renders Sydrick's finished portfolio", async () => {
   assert.match(html, /University of Zurich/);
   assert.match(html, /<span>Introduction to Business Economics<\/span><strong>91<\/strong>/);
   assert.match(html, /<span>Macroeconometrics<\/span><strong>1\.7<\/strong>/);
-  assert.doesNotMatch(html, /Advanced Time Series Econometrics|Information and Data Management|Intermediate Mathematical Economics/);
+  assert.doesNotMatch(html, /Advanced Time Series Econometrics|Intermediate Mathematical Economics/);
+  assert.match(html, /<span>Information and Data Management<\/span><strong>7\.5<\/strong>/);
+  assert.match(html, /<span>Macroeconomics 2<\/span><strong>7\.5<\/strong>/);
   assert.match(html, /Sep 2026/);
   assert.match(html, /Qiandao Lake Triathlon/);
   assert.match(html, /id="profile"/);
@@ -157,7 +167,8 @@ test("keeps the experience responsive and accessible", async () => {
   assert.match(portrait, /Math\.cos\(currentAngle\.current\) \* radius/);
   assert.match(portrait, /Math\.sin\(currentAngle\.current\) \* radius/);
   assert.match(portrait, /angle=\{0\.28\} chapter=\{1\} focusAngle=\{0\.2\}/);
-  assert.match(portrait, /metric="8\.20"/);
+  assert.match(portrait, /metric=\{language === "zh" \? "硕士" : "MSc"\}/);
+  assert.doesNotMatch(portrait, /UVA GPA|阿姆斯特丹绩点|metric="8\.20"/);
   assert.doesNotMatch(portrait, /metric="TOP 3%"/);
   assert.match(portrait, /angle=\{4\.22\} chapter=\{2\} focusAngle=\{1\.99\}/);
   assert.match(portrait, /angle=\{3\.64\} chapter=\{3\} focusAngle=\{3\.24\}/);
@@ -238,7 +249,7 @@ test("separates education, work and recognition without losing academic results"
   const work = section("experience");
   const recognition = section("recognition");
   assert.equal((education.match(/class="timeline-row timeline-row-expanded"/g) ?? []).length, 4);
-  assert.equal((education.match(/<li><span>/g) ?? []).length, 22);
+  assert.equal((education.match(/<li><span>/g) ?? []).length, 24);
   assert.doesNotMatch(education, /Y Combinator|GroupM|Feilan|Energy Hackathon/);
   assert.match(education, /graduation-1440.webp/);
   assert.match(education, /Nottingham Advantage Award/);
@@ -249,6 +260,15 @@ test("separates education, work and recognition without losing academic results"
   assert.match(work, /7,000\+ followers/);
   assert.doesNotMatch(work, /Final average|course-results/);
   assert.match(recognition, /Energy Hackathon/);
+  assert.match(recognition, /Harvard Summit for Young Leaders in China \(HSYLC\)/);
+  assert.doesNotMatch(recognition, /Selected for the Harvard/);
+  assert.match(recognition, /Massachusetts Institute of Technology \(MIT\) Energy Hackathon/);
+  assert.match(recognition, /Quantitative Reasoning: perfect score/);
+  assert.match(recognition, /\(IELTS\) · Overall 7\.0 · 2019/);
+  assert.match(work, /Venture capital, user growth and commercial data analysis/);
+  assert.match(html, /href="https:\/\/xhslink\.cn\/o\/4lwGbpLXOPo"[^>]*>Xiaohongshu/);
+  const run = html.slice(html.indexOf('class="run-editorial-grid"'));
+  assert.ok(run.indexOf("frankfurt-notes-1440.webp") < run.indexOf("frankfurt-finish-1440.webp"));
   assert.match(recognition, /heritage-1440.webp/);
   const lead = html.match(/<figure class="editorial-photo race-photo-lead">([\s\S]*?)<\/figure>/)?.[1];
   assert.ok(lead);

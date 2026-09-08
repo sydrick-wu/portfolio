@@ -300,7 +300,7 @@ function PersonalOrbit({ language, progressRef }: PortraitProps) {
 
       <group ref={economicsRing} rotation={[0.54, 0.24, 0.22]} scale={[1.2, 0.78, 1]}>
         <OrbitBand accent={graphite} chapter={1} progressRef={readingFocus} radius={1.62}>
-          <OrbitNode accent={graphite} angle={0.28} chapter={1} focusAngle={0.2} metric="8.20" label={language === "zh" ? "阿姆斯特丹绩点" : "UVA GPA"} progressRef={readingFocus} radius={1.62} />
+          <OrbitNode accent={graphite} angle={0.28} chapter={1} focusAngle={0.2} metric={language === "zh" ? "硕士" : "MSc"} label={language === "zh" ? "经济学 · 曼海姆" : "ECONOMICS · MANNHEIM"} progressRef={readingFocus} radius={1.62} />
         </OrbitBand>
       </group>
 

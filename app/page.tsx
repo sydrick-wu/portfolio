@@ -21,11 +21,11 @@ const content = {
     location: "Mannheim → Zurich ↔ Shanghai",
     headlineA: "About Sydrick",
     headlineB: "",
-    intro: "MSc Economics at Universität Mannheim, currently at the University of Zurich for exchange. Previously worked across venture capital, user growth and data analytics for Unilever; train and race in triathlon, running and cycling events.",
+    intro: "Heyyyy there, I’m Sydrick! I’m an Economics master’s student at Mannheim, currently on exchange at the University of Zurich. I’ve worked in venture capital and user growth at YC China (Y Combinator China), and in data analytics for Unilever. Away from my desk, I’m usually swimming, cycling or running.",
     enter: "Explore the orbit",
     heroContact: "Contact me",
     stats: [
-      ["8.20/10", "University of Amsterdam GPA"],
+      ["MSc", "Economics · Mannheim"],
       ["18", "countries explored"],
       ["1st", "triathlon age group"],
     ],
@@ -61,10 +61,12 @@ const content = {
       ["2023", "University of Amsterdam", "Exchange · Economics & Business", {
         summary: "Grade point average (GPA): 8.20/10 · Top 4%.",
         groups: [
-          { label: "High marks · out of 10", courses: [
+          { label: "Complete exchange results · out of 10", courses: [
             ["Mathematics 2 for Economics", "9.5"],
             ["Applied Econometrics for Business", "8.5"],
             ["Corporate Finance", "8.0"],
+            ["Information and Data Management", "7.5"],
+            ["Macroeconomics 2", "7.5"],
           ] },
         ],
       }],
@@ -99,8 +101,9 @@ const content = {
         label: "04 / Recognition",
         title: "Beyond the classroom.",
         groups: [
-          { label: "Programme selections · 2018", items: ["Selected for the Harvard Summit for Young Leaders in China", "Selected for X Week · Harvard–Yale–Massachusetts Institute of Technology immersion"] },
-          { label: "Competition projects", items: ["Massachusetts Institute of Technology Energy Hackathon · Collaborated with three students on an airline energy-cost project, 2018", "L’Oréal Global Business Strategy Competition · Developed a data-driven pop-up retail proposal, 2021"] },
+          { label: "Programme selections · 2018", items: ["Harvard Summit for Young Leaders in China (HSYLC)", "Selected for X Week · Harvard–Yale–Massachusetts Institute of Technology immersion"] },
+          { label: "Competition projects", items: ["Massachusetts Institute of Technology (MIT) Energy Hackathon · Collaborated with three students on an airline energy-cost project, 2018", "L’Oréal Global Business Strategy Competition · Developed a data-driven pop-up retail proposal, 2021"] },
+          { label: "Test scores", items: ["Graduate Record Examinations (GRE) · Quantitative Reasoning: perfect score", "International English Language Testing System (IELTS) · Overall 7.0 · 2019"] },
           { label: "Creative credentials", items: ["Signed photographer · Orient IC and Tuchong", "B-Level sketching certificate"] },
         ],
     },
@@ -128,7 +131,7 @@ const content = {
     contactLabel: "06 / Contact",
     contactTitle: "Build something worth the miles.",
     contactIntro: "I’m open to thoughtful conversations around economics, technology, venture, ambitious products and endurance sport.",
-    socialLabels: ["GitHub", "LinkedIn", "Strava", "Instagram", "Email"],
+    socialLabels: ["GitHub", "LinkedIn", "Strava", "Instagram", "Xiaohongshu", "Email"],
     back: "Back to the orbit",
   },
   zh: {
@@ -142,11 +145,11 @@ const content = {
     location: "德国曼海姆 → 瑞士苏黎世 ↔ 中国上海",
     headlineA: "关于 Sydrick",
     headlineB: "",
-    intro: "曼海姆大学经济学硕士生，目前在苏黎世大学交换学习。曾从事风险投资、用户增长，并为联合利华开展数据分析工作；持续参加铁人三项、跑步和自行车赛事训练与竞赛。",
+    intro: "嗨，你好呀！我是 Sydrick，在曼海姆大学读经济学硕士，目前在苏黎世大学交换。我曾在 YC China（Y Combinator 中国）从事风险投资和用户增长，也为联合利华做过数据分析。学习和工作之外，你多半会在泳池、骑行路上或跑道上找到我。",
     enter: "沿轨道向下探索",
     heroContact: "联系我",
     stats: [
-      ["8.20/10", "阿姆斯特丹大学交换绩点"],
+      ["硕士", "经济学 · 曼海姆"],
       ["18", "探索过的国家"],
       ["冠军", "铁人三项年龄组"],
     ],
@@ -182,10 +185,12 @@ const content = {
       ["2023", "阿姆斯特丹大学", "交换学习 · 经济学与商业", {
         summary: "绩点：8.20/10 · 前 4%。",
         groups: [
-          { label: "高分课程 · 满分 10 分", courses: [
+          { label: "全部交换课程成绩 · 满分 10 分", courses: [
             ["经济学数学 2", "9.5"],
             ["商业应用计量经济学", "8.5"],
             ["公司金融", "8.0"],
+            ["信息与数据管理", "7.5"],
+            ["宏观经济学 2", "7.5"],
           ] },
         ],
       }],
@@ -220,8 +225,9 @@ const content = {
         label: "04 / 荣誉与项目",
         title: "课堂之外。",
         groups: [
-          { label: "项目入选 · 2018 年", items: ["入选哈佛中美学生领袖峰会", "入选 X Week · 哈佛大学、耶鲁大学与麻省理工学院交流项目"] },
-          { label: "竞赛项目", items: ["麻省理工学院能源黑客松 · 与三名学生合作研究航空能源成本项目，2018 年", "欧莱雅全球商业策略竞赛 · 提出基于数据分析的快闪零售方案，2021 年"] },
+          { label: "项目入选 · 2018 年", items: ["哈佛中美学生领袖峰会（HSYLC）", "入选 X Week · 哈佛大学、耶鲁大学与麻省理工学院交流项目"] },
+          { label: "竞赛项目", items: ["麻省理工学院（MIT）能源黑客松 · 与三名学生合作研究航空能源成本项目，2018 年", "欧莱雅全球商业策略竞赛 · 提出基于数据分析的快闪零售方案，2021 年"] },
+          { label: "考试成绩", items: ["美国研究生入学考试（GRE）· 数量推理满分", "国际英语语言测试系统（IELTS，雅思）· 总分 7.0 · 2019 年"] },
           { label: "创作资质", items: ["东方 IC 与图虫签约摄影师", "素描 B 级证书"] },
         ],
     },
@@ -249,7 +255,7 @@ const content = {
     contactLabel: "06 / 联系",
     contactTitle: "做值得长途奔赴的事。",
     contactIntro: "欢迎和我交流经济学、科技、风险投资、富有野心的产品，以及耐力运动。",
-    socialLabels: ["GitHub", "领英", "Strava", "Instagram", "邮箱"],
+    socialLabels: ["GitHub", "领英", "Strava", "Instagram", "小红书", "邮箱"],
     back: "返回个人轨道",
   },
 } as const;
@@ -259,6 +265,7 @@ const socialLinks = [
   "https://www.linkedin.com/in/sydrick-wu",
   "https://www.strava.com/athletes/134105140",
   "https://www.instagram.com/syddddddrick",
+  "https://xhslink.cn/o/4lwGbpLXOPo",
   "mailto:sydrick.wu@gmail.com",
 ];
 

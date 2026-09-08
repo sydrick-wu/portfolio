@@ -72,10 +72,10 @@ export function RunEditorial({ language }: { language: Language }) {
     <div className="run-editorial" role="group" aria-label={en ? "Frankfurt half marathon photographs" : "法兰克福半程马拉松影像"}>
       <div className="race-editorial-header"><span>{en ? "Frankfurt / 22.03.2026" : "法兰克福 / 2026.03.22"}</span><span>{en ? "21.1 km / Half marathon" : "21.1 公里 / 半程马拉松"}</span></div>
       <div className="run-editorial-grid">
-        <EditorialPhoto name="frankfurt-finish" language={language} caption={en ? "01 / The final metres" : "01 / 最后的冲刺"} sizes="(max-width: 720px) 90vw, 48vw" />
+        <EditorialPhoto name="frankfurt-notes" language={language} caption={en ? "01 / Race-day notes · Original activity record" : "01 / 比赛日记 · 原始活动记录"} sizes="(max-width: 720px) 90vw, 48vw" />
         <div className="run-editorial-aside">
           <p className="run-editorial-result"><span>{en ? "A personal best" : "个人最佳"}</span><strong>1:19:50</strong><span>{en ? "Frankfurter Mainova Half Marathon" : "法兰克福 Mainova 半程马拉松"}</span></p>
-          <EditorialPhoto name="frankfurt-notes" language={language} caption={en ? "02 / Race-day notes · Original activity record" : "02 / 比赛日记 · 原始活动记录"} sizes="(max-width: 720px) 67vw, 28vw" />
+          <EditorialPhoto name="frankfurt-finish" language={language} caption={en ? "02 / The final metres" : "02 / 最后的冲刺"} sizes="(max-width: 720px) 67vw, 28vw" />
         </div>
       </div>
     </div>

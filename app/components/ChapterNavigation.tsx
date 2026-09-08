@@ -24,6 +24,7 @@ export function jumpToSection(event: MouseEvent<HTMLAnchorElement>) {
 export function ChapterNavigation({ language }: { language: "en" | "zh" }) {
   const [active, setActive] = useState("");
   const [fraction, setFraction] = useState(0);
+  const [tone, setTone] = useState("light");
   useEffect(() => {
     let frame = 0;
     const update = () => {
@@ -35,15 +36,26 @@ export function ChapterNavigation({ language }: { language: "en" | "zh" }) {
       setActive(current?.id ?? "");
       const rect = current && document.getElementById(current.id)?.getBoundingClientRect();
       setFraction(rect ? Math.max(0, Math.min(1, (marker - rect.top) / rect.height)) : 0);
+      // Sample the content behind the glass, independently of chapter progress.
+      const surface = [...document.querySelectorAll<HTMLElement>("main > section, .portrait-editorial")].find((element) => {
+        const bounds = element.getBoundingClientRect();
+        return bounds.top <= 54 && bounds.bottom > 54;
+      });
+      const light = !surface || surface.id === "contact" || surface.classList.contains("portrait-editorial") ||
+        (surface.id === "profile" && surface.dataset.stage === "0");
+      setTone(light ? "light" : "dark");
     };
     const queue = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
     update();
     window.addEventListener("scroll", queue, { passive: true });
     window.addEventListener("resize", queue);
-    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", queue); window.removeEventListener("resize", queue); };
+    const observer = new MutationObserver(queue);
+    const profile = document.getElementById("profile");
+    if (profile) observer.observe(profile, { attributes: true, attributeFilter: ["data-stage"] });
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); window.removeEventListener("scroll", queue); window.removeEventListener("resize", queue); };
   }, []);
   return (
-    <nav className="chapter-navigation" aria-label={language === "en" ? "Chapter navigation" : "章节导航"}>
+    <nav className="chapter-navigation" data-tone={tone} aria-label={language === "en" ? "Chapter navigation" : "章节导航"}>
       <a className="chapter-home" href="#top" onClick={jumpToSection} aria-label={language === "en" ? "Sydrick Wu — back to top" : "Sydrick Wu — 返回顶部"}>Sydrick Wu
         <svg className="chapter-orbit" viewBox="0 0 36 36" aria-hidden="true" data-chapter={active}>
           <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" opacity=".2" />

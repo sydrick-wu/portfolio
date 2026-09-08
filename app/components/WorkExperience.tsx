@@ -5,7 +5,7 @@ const experience = {
   en: {
     label: "03 / Experience",
     title: "Work experience.",
-    intro: "Venture capital, product growth and commercial data analysis.",
+    intro: "Venture capital, user growth and commercial data analysis.",
     roles: [
       {
         id: "miracleplus-growth", date: "Apr — Oct 2024", location: "Shanghai, China",
@@ -50,7 +50,7 @@ const experience = {
     ],
   },
   zh: {
-    label: "03 / 工作经历", title: "工作经历。", intro: "风险投资、产品增长与商业数据分析。",
+    label: "03 / 工作经历", title: "工作经历。", intro: "风险投资、用户增长与商业数据分析。",
     roles: [
       {
         id: "miracleplus-growth", date: "2024 年 4 — 10 月", location: "中国上海",
