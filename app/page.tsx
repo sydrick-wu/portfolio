@@ -22,7 +22,7 @@ const content = {
     location: "Mannheim → Zurich ↔ Shanghai",
     headlineA: "About Sydrick",
     headlineB: "",
-    intro: "Heyyyy there, I’m Sydrick! I’m an Economics master’s student at Mannheim, currently on exchange at the University of Zurich. I’ve worked in venture capital and user growth at YC China (Y Combinator China), and in data analytics for Unilever. Away from my desk, I’m usually swimming, cycling or running.",
+    intro: "Heyyyy there, I’m Sydrick! I’m an Economics master’s student at Mannheim, currently on exchange at the University of Zurich. I’ve worked in venture capital and user growth at YC China (Y Combinator China), and in data analytics at WPP GroupM for Unilever. Away from my desk, I’m usually swimming, cycling or running.",
     enter: "Explore the orbit",
     heroContact: "Contact me",
     stats: [
@@ -146,7 +146,7 @@ const content = {
     location: "德国曼海姆 → 瑞士苏黎世 ↔ 中国上海",
     headlineA: "关于 Sydrick",
     headlineB: "",
-    intro: "嗨，你好呀！我是 Sydrick，在曼海姆大学读经济学硕士，目前在苏黎世大学交换。我曾在 YC China（Y Combinator 中国）从事风险投资和用户增长，也为联合利华做过数据分析。学习和工作之外，你多半会在泳池、骑行路上或跑道上找到我。",
+    intro: "嗨，你好呀！我是 Sydrick，在曼海姆大学读经济学硕士，目前在苏黎世大学交换。我曾在 YC China（Y Combinator 中国）从事风险投资和用户增长，也曾在 WPP GroupM（群邑）为联合利华做数据分析。学习和工作之外，你多半会在泳池、骑行路上或跑道上找到我。",
     enter: "沿轨道向下探索",
     heroContact: "联系我",
     stats: [

@@ -36,6 +36,8 @@ test("provides bilingual chapter links, motion-aware navigation and a local cont
   }
   assert.match(html, /Contact me/);
   assert.match(html, /Heyyyy there, I’m Sydrick!/);
+  assert.match(html, /and in data analytics at WPP GroupM for Unilever/);
+  assert.doesNotMatch(html, /and in data analytics for Unilever/);
   assert.match(html, /venture capital and user growth at YC China \(Y Combinator China\)/);
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /backdrop-filter: blur\(16px\) saturate\(145%\)/);
