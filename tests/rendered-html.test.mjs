@@ -81,7 +81,10 @@ test("separates personal journeys from race results and preserves the travel acc
   assert.match(journeys, /Camino de Santiago/);
   assert.match(journeys, /About five days/);
   assert.doesNotMatch(journeys, /I spent time/);
-  assert.match(journeys, /“The Answer, Don’t Panic”/);
+  assert.match(journeys, /“The Answer - Don’t Panic”/);
+  assert.match(journeys, /01 \/ Solo bikepacking in the Alps/);
+  assert.match(journeys, /03 \/ Col de l’Iseran/);
+  assert.doesNotMatch(journeys, /The Answer, Don’t Panic|Life on two wheels|A pause in the mountains/);
   assert.match(journeys, /“The Answer of life is the universe\.”/);
   assert.match(journeys, /“Rain and cold/);
   assert.match(journeys, /journey possible\.”/);

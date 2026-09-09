@@ -65,7 +65,7 @@ export function Journeys({ language }: { language: "en" | "zh" }) {
           <h4>{t.caminoTitle}</h4>
           <p>{t.camino}</p>
           <div className="camino-lines" lang="en">
-            <p>“The Answer, Don’t Panic”</p>
+            <p>“The Answer - Don’t Panic”</p>
             <p>“The Answer of life is the universe.”</p>
           </div>
           <p>{t.caminoReflection}</p>
@@ -87,9 +87,9 @@ export function Journeys({ language }: { language: "en" | "zh" }) {
       <div className="alpine-album" role="group" aria-label={t.albumLabel}>
         <div className="alpine-album-heading"><span>{t.albumLabel}</span><span>01 — 03</span></div>
         <div className="alpine-album-grid">
-          <EditorialPhoto name="alps-road" language={language} caption={language === "en" ? "01 / Life on two wheels" : "01 / 两轮之上的生活"} sizes="(max-width: 720px) 88vw, 40vw" />
+          <EditorialPhoto name="alps-road" language={language} caption={language === "en" ? "01 / Solo bikepacking in the Alps" : "01 / 阿尔卑斯独自骑行旅行"} sizes="(max-width: 720px) 88vw, 40vw" />
           <EditorialPhoto name="alps-galibier" language={language} caption={language === "en" ? "02 / Col du Galibier" : "02 / 加利比耶山口"} sizes="(max-width: 720px) 42vw, 20vw" />
-          <EditorialPhoto name="alps-stream" language={language} caption={language === "en" ? "03 / A pause in the mountains" : "03 / 山间片刻"} sizes="(max-width: 720px) 42vw, 20vw" />
+          <EditorialPhoto name="alps-stream" language={language} caption={language === "en" ? "03 / Col de l’Iseran" : "03 / 伊瑟兰山口"} sizes="(max-width: 720px) 42vw, 20vw" />
         </div>
       </div>
       <section className="journey-countries" aria-labelledby="countries-title">
