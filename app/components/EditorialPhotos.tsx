@@ -3,6 +3,9 @@ import Image from "next/image";
 type Language = "en" | "zh";
 
 const photos = {
+  "alps-road": { height: 1080, en: "Sydrick and his loaded bike on a mountain road in the Alps", zh: "阿尔卑斯山路上，Sydrick 与装载行囊的自行车" },
+  "alps-galibier": { height: 1920, en: "Sydrick and a fellow cyclist beside the Col du Galibier summit sign", zh: "Sydrick 与另一位骑行者在 Galibier 山口路牌前合影" },
+  "alps-stream": { height: 1920, en: "Sydrick beside a mountain stream and lingering snow in the Alps", zh: "阿尔卑斯山间溪流与残雪旁的 Sydrick" },
   "portrait-new": { height: 2161, en: "Sydrick beside an Amsterdam canal in golden evening light", zh: "金色暮光中，坐在阿姆斯特丹运河边的 Sydrick" },
   "frankfurt-finish": { height: 2161, en: "Sydrick running through the Frankfurt half marathon finish area", zh: "Sydrick 跑过法兰克福半程马拉松终点区域" },
   "frankfurt-notes": { height: 2160, en: "Sydrick's Frankfurt race photograph with the original Strava activity overlay", zh: "Sydrick 的法兰克福比赛照片，保留原始 Strava 活动记录叠层" },

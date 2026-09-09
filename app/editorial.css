@@ -17,6 +17,22 @@
 .journey-journal blockquote { margin: 0; }
 .journey-journal blockquote p { color: #e1dde4; }
 .journey-journal figcaption { margin-top: 18px; color: #aaa; font-size: .875rem; line-height: 1.6; }
+.camino-lines { margin-block: 28px; padding-left: 20px; border-left: 2px solid #a77ac4; }
+.camino-lines p { color: #e6dfeb; font-size: clamp(20px, 2vw, 28px); line-height: 1.45; letter-spacing: -.025em; }
+.camino-lines p + p { margin-top: 18px; }
+.journey-climbs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; list-style: none; padding: 0; margin: 24px 0 0; }
+.journey-climbs li { color: #d2cbd7; font-size: .875rem; line-height: 1.5; padding-left: 12px; border-left: 1px solid #79717f; overflow-wrap: anywhere; }
+.alpine-album { margin-top: 64px; }
+.alpine-album-heading { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 18px; margin-bottom: 24px; border-bottom: 1px solid #555; color: #bdbdbd; font-size: .875rem; line-height: 1.5; }
+.alpine-album-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2.5vw, 36px); align-items: start; }
+.alpine-album-grid > :nth-child(2) { margin-top: 40px; }
+.alpine-album-grid > :nth-child(3) { margin-top: 80px; }
+.journey-countries { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr); gap: clamp(32px, 7vw, 100px); margin-top: 72px; padding-top: 36px; border-top: 1px solid #555; }
+.journey-countries h4 { margin: 0 0 20px; font-size: clamp(26px, 2.8vw, 40px); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; text-wrap: balance; }
+.journey-countries p { color: #c7c7c7; font-size: 1rem; line-height: 1.75; margin: 0; }
+.journey-countries ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 20px; list-style: none; padding: 0; margin: 0; }
+.journey-countries li { display: flex; align-items: baseline; gap: 10px; color: #ddd; font-size: .875rem; line-height: 1.5; overflow-wrap: anywhere; }
+.journey-countries li span { flex: none; }
 @media (max-width: 720px) {
   .journeys-grid { grid-template-columns: minmax(0, 1fr); gap: 44px; }
   .journey-metrics { grid-template-columns: minmax(0, 1fr); gap: 20px; }
@@ -24,6 +40,12 @@
   .journey-metrics dd { flex: none; font-size: 28px; }
   .journey-metrics dt { text-align: right; }
   .journey-journal { padding-left: 18px; }
+  .alpine-album-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; }
+  .alpine-album-grid > :first-child { grid-column: 1 / -1; }
+  .alpine-album-grid > :nth-child(2) { margin-top: 0; }
+  .alpine-album-grid > :nth-child(3) { margin-top: 28px; }
+  .journey-countries { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .journey-countries ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* Photography follows the existing chapter rhythm; nothing overlays the orbit. */

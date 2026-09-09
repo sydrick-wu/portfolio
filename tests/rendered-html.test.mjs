@@ -79,6 +79,16 @@ test("separates personal journeys from race results and preserves the travel acc
   assert.ok(journeys);
   assert.match(journeys, /Beyond the finish line\./);
   assert.match(journeys, /Camino de Santiago/);
+  assert.match(journeys, /About five days/);
+  assert.doesNotMatch(journeys, /I spent time/);
+  assert.match(journeys, /“The Answer, Don’t Panic”/);
+  assert.match(journeys, /“The Answer of life is the universe\.”/);
+  assert.match(journeys, /“Rain and cold/);
+  assert.match(journeys, /journey possible\.”/);
+  for (const climb of ["Col du Télégraphe", "Col du Glandon", "Col de la Madeleine", "Col des Montets", "Col de la Forclaz", "Petit Saint-Bernard"]) assert.ok(journeys.includes(climb));
+  assert.equal((journeys.match(/<span aria-hidden="true">/g) ?? []).length, 18);
+  assert.match(journeys, /18 countries\. Still exploring\./);
+  for (const country of ["United States", "Luxembourg", "Denmark", "Liechtenstein", "Malaysia", "Singapore"]) assert.ok(journeys.includes(country));
   assert.doesNotMatch(journeys, /100\s?km|completed|entire route|85\s?km|HC|Hors/);
   assert.match(journeys, /eight-day solo bikepacking journey, with six days on the bike/);
   for (const detail of ["680 km", "15,388 m", "Grand-Saint-Bernard", "Ruben", "Adapted from my travel journal"]) assert.ok(journeys.includes(detail));
@@ -233,7 +243,7 @@ test("keeps the experience responsive and accessible", async () => {
 
 test("renders the curated photographs with responsive local assets and English captions", async () => {
   const html = await (await render()).text();
-  const names = ["portrait-new", "monochrome", "graduation", "heritage", "climb", "peloton", "finish", "coast", "frankfurt-finish", "frankfurt-notes"];
+  const names = ["portrait-new", "monochrome", "graduation", "heritage", "climb", "peloton", "finish", "coast", "frankfurt-finish", "frankfurt-notes", "alps-road", "alps-galibier", "alps-stream"];
   const images = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => tag);
   assert.equal(images.length, names.length + 1); // Decorative static finale.
   for (const name of names) {
