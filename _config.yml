@@ -11,9 +11,9 @@ title                    : "Sydrick's biooooooo"
 title_separator          : "-"
 name                     : &name "Sydrick"
 description              : &description "personal description"
-url                      : https://sydrick-wu.github.io/ # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
-baseurl                  : "" # the subpath of your site, e.g. "/blog"
-repository               : "Sydrrrrick/sydrick-wu.github.io"
+url                      : https://sydrick-wu.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+baseurl                  : "/portfolio" # the subpath of your site, e.g. "/blog"
+repository               : "sydrick-wu/portfolio"
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 breadcrumbs              : false # true, false (default)
 words_per_minute         : 160

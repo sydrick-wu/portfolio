@@ -103,4 +103,4 @@ Some achievements or tags (I am not really a 'tag' person tho...)
 
 For more info
 ------
-[Wechat](https://sydrick-wu.github.io/images/WechatQR.JPG) / [小红书-personal](https://www.xiaohongshu.com/user/profile/5f9c79860000000001009d96?xhsshare=CopyLink&appuid=5f9c79860000000001009d96&apptime=1707038767) / [小红书-aiproducthunt](https://www.xiaohongshu.com/user/profile/5f6c4ec70000000001003a8c?xhsshare=CopyLink&appuid=5f9c79860000000001009d96&apptime=1723087523&share_id=60db565e63924ca694c9e757b6a8aa30)
+[Wechat]({{ '/images/WechatQR.JPG' | relative_url }}) / [小红书-personal](https://www.xiaohongshu.com/user/profile/5f9c79860000000001009d96?xhsshare=CopyLink&appuid=5f9c79860000000001009d96&apptime=1707038767) / [小红书-aiproducthunt](https://www.xiaohongshu.com/user/profile/5f6c4ec70000000001003a8c?xhsshare=CopyLink&appuid=5f9c79860000000001009d96&apptime=1723087523&share_id=60db565e63924ca694c9e757b6a8aa30)
